@@ -11,7 +11,7 @@ type Props = {
   className?: string;
   selectButtons: {
     prize: number;
-    whoIsSelect: Selection[];
+    whoHasSelected: Selection[];
     isSelect: boolean;
     color: Team;
   }[];
@@ -28,7 +28,7 @@ const ButtonGame: React.FC<Props> = ({ className, selectButtons }) => {
           <SelectButtonAndList
             key={index}
             prize={data.prize}
-            whoIsSelect={data.whoIsSelect}
+            whoIsSelect={data.whoHasSelected}
           />
         ))}
       </div>

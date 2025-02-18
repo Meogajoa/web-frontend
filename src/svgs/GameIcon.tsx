@@ -8,7 +8,10 @@ const BellIcon: React.FC<Props> = ({ className, ...props }) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 38 38"
-      className={cn('fill-none', className)}
+      className={cn(
+        'bg-gray-1 relative size-9.5 cursor-pointer rounded-full fill-none',
+        className,
+      )}
       {...props}
     >
       <circle cx="19" cy="19" r="19" fill="#1C1C1D" />

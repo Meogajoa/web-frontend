@@ -1,16 +1,16 @@
 import React from 'react';
 import { cn } from '~/utils/classname';
 
-export type NoticeIconProps = {
+type Props = {
   className?: string;
   notice: number;
 };
 
-const NoticeIcon: React.FC<NoticeIconProps> = ({ className, notice }) => {
+const NoticeIcon: React.FC<Props> = ({ className, notice }) => {
   return (
     <div
       className={cn(
-        'font-brand bg-red flex size-4 items-center justify-center rounded-full text-[0.5rem] font-bold text-white',
+        'bg-red flex size-4 items-center justify-center rounded-full font-brand text-[0.5rem] font-bold text-white',
         className,
       )}
     >

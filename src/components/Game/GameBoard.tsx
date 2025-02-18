@@ -9,7 +9,7 @@ type Props = {
   gameData: {
     selectButtons: {
       prize: number;
-      whoIsSelect: Selection[];
+      whoHasSelected: Selection[];
       isSelect: boolean;
       color: Team;
     }[];
@@ -24,22 +24,18 @@ const GameBoard: React.FC<Props> = ({
   gameData,
   onClose,
 }) => {
-  let gameContent = null;
-
-  if (gameType === 'Button') {
-    gameContent = <ButtonGame selectButtons={gameData.selectButtons} />;
-  }
-
   return (
     <div
       className={cn(
-        'relative h-fit w-fit rounded-lg bg-white px-5.5 py-5 shadow-lg',
+        'relative h-fit w-full rounded-lg bg-white px-5.5 py-5 shadow-lg',
         className,
       )}
       onClick={(e) => e.stopPropagation()}
     >
-      <TopArrowIcon className="absolute top-6 right-3" onClick={onClose} />
-      {gameContent}
+      <TopArrowIcon className="absolute right-3 top-6" onClick={onClose} />
+      {gameType === 'Button' && (
+        <ButtonGame selectButtons={gameData.selectButtons} />
+      )}
     </div>
   );
 };
