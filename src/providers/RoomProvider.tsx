@@ -25,7 +25,7 @@ export const RoomProvider: React.FC<PropsWithChildren<Props>> = ({
   id,
   title,
   hostNickname,
-  isPlaying,
+  playing,
   currentChatRoom,
   lobbyChatLogs,
   children,
@@ -37,7 +37,7 @@ export const RoomProvider: React.FC<PropsWithChildren<Props>> = ({
     initialState.id = id;
     initialState.title = title;
     initialState.hostNickname = hostNickname;
-    initialState.isPlaying = isPlaying;
+    initialState.playing = playing;
     initialState.currentChatRoom = currentChatRoom;
     initialState.messagesByRoom[currentChatRoom] = lobbyChatLogs;
 

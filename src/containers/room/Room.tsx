@@ -19,9 +19,9 @@ type Props = {
 };
 
 const Room: React.FC<Props> = ({ className, rejoin }) => {
-  const { id, isPlaying } = useRoom();
+  const { id, playing } = useRoom();
   const { player } = useGame();
-  const [canStartGame, setCanStartGame] = React.useState(isPlaying);
+  const [canStartGame, setCanStartGame] = React.useState(playing);
 
   useBodyBgColor(
     player.team === Team.Black
@@ -51,7 +51,7 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       )}
       data-testid="room"
     >
-      {!isPlaying ? (
+      {!playing ? (
         <>
           <RoomHeaderLobby className="shrink-0" />
           <RoomUserList />

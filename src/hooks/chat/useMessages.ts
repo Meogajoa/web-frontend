@@ -51,42 +51,42 @@ const useChatMessages = ({
   onNewMessage?: (message: ChatMessage) => void;
 }) => {
   const { user } = useUser();
-  const { id, messagesByRoom, isPlaying, addMessage, addMessages } = useRoom();
+  const { id, messagesByRoom, playing, addMessage, addMessages } = useRoom();
   const { player } = useGame();
 
   useSubscription(
     compact([
       // Room lobby
-      !isPlaying && `/topic/room/${id}/chat`,
+      !playing && `/topic/room/${id}/chat`,
 
       // In-game general
-      isPlaying && `/topic/game/${id}/chat`,
+      playing && `/topic/game/${id}/chat`,
 
       // In-game black
-      isPlaying &&
+      playing &&
         (player.team === Team.Black ||
           player.status === PlayerStatus.Eliminated) &&
         `/topic/game/${id}/chat/black`,
 
       // In-game white
-      isPlaying &&
+      playing &&
         (player.team === Team.White ||
           player.status === PlayerStatus.Eliminated) &&
         `/topic/game/${id}/chat/white`,
 
       // In-game red
-      isPlaying &&
+      playing &&
         (player.team === Team.Red ||
           player.status === PlayerStatus.Eliminated) &&
         `/topic/game/${id}/chat/red`,
 
       // In-game eliminated
-      isPlaying &&
+      playing &&
         player.status === PlayerStatus.Eliminated &&
         `/topic/game/${id}/chat/eliminated`,
 
       // In-game personal
-      isPlaying &&
+      playing &&
         player.status === PlayerStatus.Alive &&
         `/topic/user/${user.name}/gameChat`,
     ]),

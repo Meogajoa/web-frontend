@@ -31,7 +31,7 @@ const RoomPage: React.FC<Props> = ({ params }) => {
           id={id}
           title={data.name}
           hostNickname={data.owner}
-          isPlaying={data.playing}
+          playing={data.playing}
           lobbyChatLogs={data.chatLogs.map((chatLog) => ({
             ...chatLog,
             type: ChatMessageType.Chat,

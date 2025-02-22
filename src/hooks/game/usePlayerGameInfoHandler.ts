@@ -13,7 +13,7 @@ const usePlayerGameInfoHandler = ({ enabled }: { enabled: boolean }) => {
   const t = useTranslations('roomRoute.chatMessage');
 
   const { user } = useUser();
-  const { setIsPlaying, setCurrentChatRoom, broadcastMessage } = useRoom();
+  const { setPlaying, setCurrentChatRoom, broadcastMessage } = useRoom();
   const { setPlayer } = useGame();
 
   usePlayerGameInfo({
@@ -25,7 +25,7 @@ const usePlayerGameInfoHandler = ({ enabled }: { enabled: boolean }) => {
   });
 
   function handlePlayerGameInfo({ id, player, sendTime }: PlayerGameInfo) {
-    setIsPlaying(true);
+    setPlaying(true);
     setCurrentChatRoom(convertToTeamChatRoom(player.teamColor));
     setPlayer({
       team: player.teamColor,

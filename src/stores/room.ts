@@ -7,7 +7,7 @@ export type RoomState = {
   id: string;
   title: string;
   hostNickname: string;
-  isPlaying: boolean;
+  playing: boolean;
   currentChatRoom: ChatRoom;
   messagesByRoom: Record<ChatRoom, ChatMessage[]>;
 };
@@ -16,7 +16,7 @@ export type RoomActions = {
   setId: (id: string) => void;
   setTitle: (title: string) => void;
   setHostNickname: (nickname: string) => void;
-  setIsPlaying: (isPlaying: boolean) => void;
+  setPlaying: (isPlaying: boolean) => void;
   setCurrentChatRoom: (chatRoom: ChatRoom) => void;
   addMessage: (chatRoom: ChatRoom, message: ChatMessage) => void;
   addMessages: (chatRoom: ChatRoom, messages: ChatMessage[]) => void;
@@ -33,7 +33,7 @@ export const defaultInitState: RoomState = {
   id: '',
   title: '',
   hostNickname: '',
-  isPlaying: false,
+  playing: false,
   currentChatRoom: ChatRoom.Lobby,
   messagesByRoom: Object.values(ChatRoom).reduce(
     (acc, key) => ({
@@ -56,8 +56,8 @@ export const createRoomStore = (initState: RoomState = defaultInitState) => {
     setHostNickname(hostNickname) {
       set({ hostNickname });
     },
-    setIsPlaying(isPlaying) {
-      set({ isPlaying });
+    setPlaying(isPlaying) {
+      set({ playing: isPlaying });
     },
     setCurrentChatRoom(chatRoom) {
       set({ currentChatRoom: chatRoom });
