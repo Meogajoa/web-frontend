@@ -1,3 +1,4 @@
+import { Button } from '@/components/Button';
 import { RoomChatBar } from '@/components/ChatBar';
 import RoomHeaderGame from '@/containers/room/RoomHeaderGame';
 import RoomHeaderLobby from '@/containers/room/RoomHeaderLobby';
@@ -51,11 +52,21 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       data-testid="room"
     >
       {!isPlaying ? (
-        <RoomHeaderLobby className="shrink-0" />
+        <>
+          <RoomHeaderLobby className="shrink-0" />
+          <RoomUserList />
+        </>
       ) : (
-        <RoomHeaderGame className="shrink-0" />
+        <>
+          <RoomHeaderGame className="shrink-0" />
+          <div className="relative mx-4">
+            <Button className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]">
+              투표 하러가기
+            </Button>
+          </div>
+        </>
       )}
-      {!isPlaying && <RoomUserList />}
+
       <RoomMessages className="flex-1" />
       <RoomChatBar
         className="bottom-0-dynamic fixed w-full"

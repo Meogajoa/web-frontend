@@ -9,9 +9,7 @@
   --color-gray-4: #88888a;
   --color-gray-5: #b8b8b8;
   --color-gray-6: #e3e3e4;
-
   --color-red: #f24822;
-
   --color-sub: #5f657b;
 }
 
@@ -68,5 +66,17 @@
   /* For Webkit-based browsers (Chrome, Safari and Opera) */
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-40%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
