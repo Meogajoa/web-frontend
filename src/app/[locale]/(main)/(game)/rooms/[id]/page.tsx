@@ -9,6 +9,7 @@ import { RoomProvider } from '@/providers/RoomProvider';
 import { ChatMessageType, ChatRoom } from '@/types/chat';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+
 type Props = {
   params: Promise<{ id: string }>;
 };

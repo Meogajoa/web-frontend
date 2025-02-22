@@ -1,7 +1,8 @@
 import DayOrNightNoticeModal from '@/components/BrandModal/DayOrNightNoticeModal';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
-import { GameModal, PlayerStatus } from '@/types/game';
+import { ChatRoom } from '@/types/chat';
+import { GameModal, GameTime, PlayerStatus } from '@/types/game';
 import { convertToTeamChatRoom } from '@/utils/chat';
 import React from 'react';
 
@@ -17,7 +18,7 @@ const GameModalProvider: React.FC = () => {
           modalVisible === GameModal.DayOrNightNotice
         }
         time={time}
-        onMove={handleMove}
+        onMove={handleDayOrNightMove}
         onClose={handleClose}
       />
     </>
@@ -27,9 +28,17 @@ const GameModalProvider: React.FC = () => {
     setModalVisible(null);
   }
 
-  function handleMove() {
+  function handleDayOrNightMove() {
     setModalVisible(null);
-    setCurrentChatRoom(convertToTeamChatRoom(player.team));
+    if (time === GameTime.Invalid) {
+      return;
+    }
+
+    setCurrentChatRoom(
+      time === GameTime.Day
+        ? ChatRoom.General
+        : convertToTeamChatRoom(player.team),
+    );
   }
 };
 
