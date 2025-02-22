@@ -11,6 +11,7 @@ import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
 import { MiniGame, Team } from '@/types/game';
 import { cn } from '@/utils/classname';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 type Props = {
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const Room: React.FC<Props> = ({ className, rejoin }) => {
+  const t = useTranslations('roomRoute');
   const { id, playing } = useRoom();
   const { player, playingMiniGame } = useGame();
   const [canStartGame, setCanStartGame] = React.useState(playing);
@@ -62,7 +64,7 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
           {playingMiniGame === MiniGame.Vote && (
             <div className="relative mx-4">
               <Button className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]">
-                투표 하러가기
+                {t('voteMiniGameButton')}
               </Button>
             </div>
           )}

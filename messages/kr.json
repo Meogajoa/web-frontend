@@ -54,7 +54,8 @@
       "teamColorSystemMessage": "당신은 {teamColor, select, BLACK {흑팀} WHITE {백팀} other {빨팀}}입니다.",
       "teamChatStartSystemMessage": "팀원 {userNames}님과\n팀 채팅을 시작합니다.",
       "daySystemMessage": "낮이 되었습니다.\n전체 채팅방으로 이동해 미니게임을 진행해 주시기 바랍니다."
-    }
+    },
+    "voteMiniGameButton": "투표하러 가기"
   },
   "bottomNavigation": {
     "store": "상점",
