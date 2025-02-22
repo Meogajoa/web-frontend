@@ -9,7 +9,7 @@ import useBodyBgColor from '@/hooks/misc/useBodyBgColor';
 import useRoomSystemNotice from '@/hooks/room/useRoomSystemNotice';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
-import { Team } from '@/types/game';
+import { MiniGame, Team } from '@/types/game';
 import { cn } from '@/utils/classname';
 import React from 'react';
 
@@ -20,7 +20,7 @@ type Props = {
 
 const Room: React.FC<Props> = ({ className, rejoin }) => {
   const { id, playing } = useRoom();
-  const { player } = useGame();
+  const { player, playingMiniGame } = useGame();
   const [canStartGame, setCanStartGame] = React.useState(playing);
 
   useBodyBgColor(
@@ -59,11 +59,13 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       ) : (
         <>
           <RoomHeaderGame className="shrink-0" />
-          <div className="relative mx-4">
-            <Button className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]">
-              투표 하러가기
-            </Button>
-          </div>
+          {playingMiniGame === MiniGame.Vote && (
+            <div className="relative mx-4">
+              <Button className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]">
+                투표 하러가기
+              </Button>
+            </div>
+          )}
         </>
       )}
 
