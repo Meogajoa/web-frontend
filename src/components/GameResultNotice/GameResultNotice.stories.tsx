@@ -6,7 +6,6 @@ import {
 } from '@/components/GameResultNotice';
 import { Team } from '@/types/game';
 import type { Meta, StoryObj } from '@storybook/react';
-import stamp from 'public/images/game/icons/stamp.png';
 
 const meta: Meta<typeof GameResultNotice> = {
   title: 'Molecules/GameResultNotice',
@@ -50,13 +49,13 @@ export const Default: Story = {
     const voteNoticeItemData: VoteNoticeItemProps[] = [
       {
         nickname: '닉네임 01',
-        voteIcon: stamp.src,
+        voteIcon: '/images/icons/stamp.png',
         color: Team.White,
         votes: 2,
       },
       {
         nickname: '닉네임 02',
-        voteIcon: stamp.src,
+        voteIcon: '/images/icons/stamp.png',
         color: Team.White,
         votes: 4,
       },
