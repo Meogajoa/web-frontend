@@ -27,7 +27,7 @@ const variants = cva('relative overflow-clip rounded-[0.625rem]', {
 
 export type ProfileImageProps = VariantProps<typeof variants> & {
   className?: string;
-  playerNumber: PlayerNumber;
+  playerNumber?: PlayerNumber;
   src?: string;
   as?: React.ElementType;
   onClick?: () => void;
@@ -37,8 +37,8 @@ const ProfileImage: React.FC<React.PropsWithChildren<ProfileImageProps>> = ({
   className,
   size,
   color,
-  src,
   playerNumber,
+  src,
   as: Component = 'button',
   onClick: handleClick,
   children,
