@@ -9,7 +9,8 @@ import useBodyBgColor from '@/hooks/misc/useBodyBgColor';
 import useRoomSystemNotice from '@/hooks/room/useRoomSystemNotice';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
-import { MiniGame, Team } from '@/types/game';
+import { GameModal, MiniGame, Team } from '@/types/game';
+import { convertToTeamChatRoom } from '@/utils/chat';
 import { cn } from '@/utils/classname';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -21,8 +22,8 @@ type Props = {
 
 const Room: React.FC<Props> = ({ className, rejoin }) => {
   const t = useTranslations('roomRoute');
-  const { id, playing } = useRoom();
-  const { player, playingMiniGame } = useGame();
+  const { id, playing, currentChatRoom } = useRoom();
+  const { player, playingMiniGame, setModalVisible } = useGame();
   const [canStartGame, setCanStartGame] = React.useState(playing);
 
   useBodyBgColor(
@@ -61,13 +62,17 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       ) : (
         <>
           <RoomHeaderGame className="shrink-0" />
-          {playingMiniGame === MiniGame.Vote && (
-            <div className="relative mx-4">
-              <Button className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]">
-                {t('voteMiniGameButton')}
-              </Button>
-            </div>
-          )}
+          {playingMiniGame === MiniGame.Vote &&
+            currentChatRoom === convertToTeamChatRoom(player.team) && (
+              <div className="relative mx-4">
+                <Button
+                  className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]"
+                  onClick={handleVoteGameModalOpen}
+                >
+                  {t('voteMiniGameButton')}
+                </Button>
+              </div>
+            )}
         </>
       )}
 
@@ -85,6 +90,10 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
 
   function handleGameEnd() {
     rejoin?.();
+  }
+
+  function handleVoteGameModalOpen() {
+    setModalVisible(GameModal.VoteMiniGame);
   }
 };
 

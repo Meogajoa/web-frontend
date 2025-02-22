@@ -112,7 +112,7 @@ const useGameSystemNoticeHandler = ({
         default:
           break;
       }
-    });
+    }, delay);
   }
 };
 
