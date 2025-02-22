@@ -1,5 +1,6 @@
 import useGameSystemNotice, {
   type DayOrNightNotice,
+  type MiniGameWillEndNotice,
   type MiniGameWillStartNotice,
 } from '@/hooks/game/useGameSystemNotice';
 import { useGame } from '@/providers/GameProvider';
@@ -20,7 +21,8 @@ const useGameSystemNoticeHandler = ({
   onGameEnd?: () => void;
 }) => {
   const { id, broadcastMessage } = useRoom();
-  const { player, setModalVisible, setTime, setNthDay } = useGame();
+  const { player, setModalVisible, setPlayingMiniGame, setTime, setNthDay } =
+    useGame();
   const t = useTranslations('roomRoute.chatMessage');
 
   useGameSystemNotice({
@@ -29,6 +31,7 @@ const useGameSystemNoticeHandler = ({
     onDayOrNight: handleGameDayOrNight,
     onGameEnd: handleGameEnd,
     onMiniGameWillStart: handleMiniGameWillStart,
+    onMiniGameWillEnd: handleMiniGameWillEnd,
   });
 
   function handleGameDayOrNight(gameDayOrNightNotice: DayOrNightNotice) {
@@ -40,22 +43,20 @@ const useGameSystemNoticeHandler = ({
     }
 
     assert(gameDayOrNightNotice.sendTime, 'SendTime should be defined');
-    setModalVisible(GameModal.DayOrNightNotice);
 
-    if (gameDayOrNightNotice.dayOrNight === GameTime.Day) {
-      broadcastMessage(
-        [ChatRoom.Personal, convertToTeamChatRoom(player.team)],
-        {
-          // id: gameDayOrNightNotice.id,
-          id: uniqueId(), // FIXME: use server id
-          type: ChatMessageType.System,
-          sender: gameDayOrNightNotice.sender,
-          // sendTime: gameDayOrNightNotice.sendTime,
-          sendTime: new Date(), // FIXME: use server time
-          content: t('daySystemMessage'),
-        },
-      );
-    }
+    setModalVisible(GameModal.DayOrNightNotice);
+    broadcastMessage([ChatRoom.Personal, convertToTeamChatRoom(player.team)], {
+      // id: gameDayOrNightNotice.id,
+      id: uniqueId(), // FIXME: use server id
+      type: ChatMessageType.System,
+      sender: gameDayOrNightNotice.sender,
+      // sendTime: gameDayOrNightNotice.sendTime,
+      sendTime: new Date(), // FIXME: use server time
+      content:
+        gameDayOrNightNotice.dayOrNight === GameTime.Day
+          ? t('daySystemMessage')
+          : t('nightSystemMessage'),
+    });
   }
 
   function handleMiniGameWillStart(
@@ -64,22 +65,54 @@ const useGameSystemNoticeHandler = ({
     const scheduledTime = dayjs.utc(miniGameWillStartNotice.scheduledTime);
     const currentTime = dayjs.utc();
     const delay = Math.max(0, scheduledTime.diff(currentTime));
-    console.debug('Schedule time delay', delay);
 
+    console.debug(
+      `${miniGameWillStartNotice.miniGameType} schedule time delay - mini game will start in`,
+      delay,
+    );
     setTimeout(() => {
-      console.debug('delay end!! should start mini game');
+      console.debug(
+        `${miniGameWillStartNotice.miniGameType} delay end - mini game is starting`,
+      );
 
       switch (miniGameWillStartNotice.miniGameType) {
         case MiniGame.ButtonClick:
           // FIXME: Implement button click mini game
           break;
         case MiniGame.Vote:
-          // FIXME: Implement vote mini game
+          setPlayingMiniGame(MiniGame.Vote);
           break;
         default:
           break;
       }
     }, delay);
+  }
+
+  function handleMiniGameWillEnd(miniGameWillEndNotice: MiniGameWillEndNotice) {
+    const scheduledTime = dayjs.utc(miniGameWillEndNotice.scheduledTime);
+    const currentTime = dayjs.utc();
+    const delay = Math.max(0, scheduledTime.diff(currentTime));
+
+    console.debug(
+      `${miniGameWillEndNotice.miniGameType} schedule time delay - mini game will end in`,
+      delay,
+    );
+    setTimeout(() => {
+      console.debug(
+        `${miniGameWillEndNotice.miniGameType} delay end - mini game is ending`,
+      );
+
+      switch (miniGameWillEndNotice.miniGameType) {
+        case MiniGame.ButtonClick:
+          // FIXME: Implement button click mini game
+          break;
+        case MiniGame.Vote:
+          setPlayingMiniGame(null);
+          break;
+        default:
+          break;
+      }
+    });
   }
 };
 
