@@ -1,9 +1,11 @@
 import DayOrNightNoticeModal from '@/components/BrandModal/DayOrNightNoticeModal';
+import VoteMiniGameModal from '@/components/BrandModal/VoteMiniGameModal';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
 import { ChatRoom } from '@/types/chat';
 import { GameModal, GameTime, PlayerStatus } from '@/types/game';
 import { convertToTeamChatRoom } from '@/utils/chat';
+import { noop } from 'lodash-es';
 import React from 'react';
 
 const GameModalProvider: React.FC = () => {
@@ -19,6 +21,17 @@ const GameModalProvider: React.FC = () => {
         }
         time={time}
         onMove={handleDayOrNightMove}
+        onClose={handleClose}
+      />
+      <VoteMiniGameModal
+        visible={
+          // player.status === PlayerStatus.Alive &&
+          modalVisible === GameModal.VoteMiniGame
+        }
+        // FIXME: Fix the following props
+        availableVoteCount={1}
+        onVote={noop}
+        onCancel={noop}
         onClose={handleClose}
       />
     </>

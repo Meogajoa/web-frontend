@@ -51,4 +51,5 @@ export enum MiniGame {
 
 export enum GameModal {
   DayOrNightNotice,
+  VoteMiniGame,
 }

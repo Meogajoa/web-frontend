@@ -82,5 +82,11 @@
     "dayInfo": "다음 낮에 전체 채팅방이 리셋됩니다.",
     "nightInfo": "다음 밤에 팀 채팅방이 리셋됩니다.",
     "moveButton": "이동"
+  },
+  "voteMiniGameModal": {
+    "title": "투표",
+    "availableVoteCount": "사용 가능 투표권: {voteCount}개",
+    "voteButton": "투표",
+    "cancelButton": "취소"
   }
 }
