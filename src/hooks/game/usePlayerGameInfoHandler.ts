@@ -26,7 +26,7 @@ const usePlayerGameInfoHandler = ({ enabled }: { enabled: boolean }) => {
 
   function handlePlayerGameInfo({ id, player, sendTime }: PlayerGameInfo) {
     setIsPlaying(true);
-    setCurrentChatRoom(ChatRoom.General);
+    setCurrentChatRoom(convertToTeamChatRoom(player.teamColor));
     setPlayer({
       team: player.teamColor,
       number: player.number,

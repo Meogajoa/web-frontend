@@ -4,8 +4,13 @@ import useGameSystemNotice, {
 } from '@/hooks/game/useGameSystemNotice';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
-import { GameModal, MiniGame } from '@/types/game';
+import { ChatMessageType, ChatRoom } from '@/types/chat';
+import { GameModal, GameTime, MiniGame } from '@/types/game';
+import { assert } from '@/utils/assert';
+import { convertToTeamChatRoom } from '@/utils/chat';
 import { dayjs } from '@/utils/date';
+import { uniqueId } from 'lodash-es';
+import { useTranslations } from 'next-intl';
 
 const useGameSystemNoticeHandler = ({
   enabled,
@@ -14,8 +19,9 @@ const useGameSystemNoticeHandler = ({
   enabled: boolean;
   onGameEnd?: () => void;
 }) => {
-  const { id } = useRoom();
-  const { setModalVisible, setTime } = useGame();
+  const { id, broadcastMessage } = useRoom();
+  const { player, setModalVisible, setTime, setNthDay } = useGame();
+  const t = useTranslations('roomRoute.chatMessage');
 
   useGameSystemNotice({
     variables: { id },
@@ -27,7 +33,29 @@ const useGameSystemNoticeHandler = ({
 
   function handleGameDayOrNight(gameDayOrNightNotice: DayOrNightNotice) {
     setTime(gameDayOrNightNotice.dayOrNight);
+    setNthDay(gameDayOrNightNotice.day);
+
+    if (gameDayOrNightNotice.day === 0) {
+      return;
+    }
+
+    assert(gameDayOrNightNotice.sendTime, 'SendTime should be defined');
     setModalVisible(GameModal.DayOrNightNotice);
+
+    if (gameDayOrNightNotice.dayOrNight === GameTime.Day) {
+      broadcastMessage(
+        [ChatRoom.Personal, convertToTeamChatRoom(player.team)],
+        {
+          // id: gameDayOrNightNotice.id,
+          id: uniqueId(), // FIXME: use server id
+          type: ChatMessageType.System,
+          sender: gameDayOrNightNotice.sender,
+          // sendTime: gameDayOrNightNotice.sendTime,
+          sendTime: new Date(), // FIXME: use server time
+          content: t('daySystemMessage'),
+        },
+      );
+    }
   }
 
   function handleMiniGameWillStart(

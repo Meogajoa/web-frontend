@@ -24,16 +24,13 @@ const BaseNoticeSchema = z.object({
   type: NoticeTypeSchema,
   id: z.string(),
   sender: z.literal('SYSTEM'),
-  sendTime: z
-    .union([z.string(), z.date()])
-    .transform((date) => new Date(date))
-    .optional(),
 });
 
 /**
  * GAME_DAY_OR_NIGHT
  */
 const dayOrNightNoticeSchema = BaseNoticeSchema.extend({
+  sendTime: z.union([z.string(), z.date()]).transform((date) => new Date(date)),
   type: z.literal(NoticeType.GameDayOrNight),
   day: z.number(),
   dayOrNight: z.nativeEnum(GameTime),
@@ -44,6 +41,7 @@ export type DayOrNightNotice = z.infer<typeof dayOrNightNoticeSchema>;
  * MINI_GAME_WILL_START_NOTICE
  */
 const miniGameWillStartNoticeSchema = BaseNoticeSchema.extend({
+  sendTime: z.union([z.string(), z.date()]).transform((date) => new Date(date)),
   miniGameType: z.nativeEnum(MiniGame),
   scheduledTime: z
     .union([z.string(), z.date()])
@@ -63,6 +61,10 @@ export type MiniGameWillEndNotice = z.infer<typeof miniGameWillEndNoticeSchema>;
  * BUTTON_GAME_STATUS
  */
 const buttonGameStatusNoticeSchema = BaseNoticeSchema.extend({
+  sendTime: z
+    .union([z.string(), z.date()])
+    .transform((date) => new Date(date))
+    .optional(),
   twentyButtons: z.array(playerNumberSchema),
   fiftyButtons: z.array(playerNumberSchema),
   hundredButtons: z.array(playerNumberSchema),
@@ -75,6 +77,10 @@ export type ButtonGameStatusNotice = z.infer<
  * VOTE_GAME_STATUS
  */
 const voteGameStatusNoticeSchema = BaseNoticeSchema.extend({
+  sendTime: z
+    .union([z.string(), z.date()])
+    .transform((date) => new Date(date))
+    .optional(),
   result: z.record(
     z.enum(['1', '2', '3', '4', '5', '6', '7', '8', '9']),
     z.number(),
@@ -86,6 +92,7 @@ export type VoteGameStatusNotice = z.infer<typeof voteGameStatusNoticeSchema>;
  * VOTE_RESULT
  */
 const voteResultNoticeSchema = BaseNoticeSchema.extend({
+  sendTime: z.union([z.string(), z.date()]).transform((date) => new Date(date)),
   eliminatedId: playerNumberSchema.array(),
   surviveCount: playerNumberSchema,
 });
@@ -95,6 +102,7 @@ export type VoteResultNotice = z.infer<typeof voteResultNoticeSchema>;
  * GAME_END
  */
 const gameEndNoticeSchema = BaseNoticeSchema.extend({
+  sendTime: z.union([z.string(), z.date()]).transform((date) => new Date(date)),
   type: z.literal(NoticeType.GameEnd),
   content: z.string(),
 });
