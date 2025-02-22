@@ -22,6 +22,12 @@ export type GameState = {
   eliminatedPlayerNumbers: PlayerNumber[];
   modalVisible: Nullable<GameModal>;
   playingMiniGame: Nullable<MiniGame>;
+  miniGame: {
+    vote: {
+      availableVoteCount: number;
+      result: Record<PlayerNumber, number>;
+    };
+  };
 };
 
 export type GameActions = {
@@ -36,6 +42,7 @@ export type GameActions = {
   setEliminatedPlayerNumbers: (eliminatedPlayerNumbers: PlayerNumber[]) => void;
   setModalVisible: (modalVisible: Nullable<GameModal>) => void;
   setPlayingMiniGame: (playingMiniGame: Nullable<MiniGame>) => void;
+  clearMiniGame: () => void;
   clearGameStore: () => void;
 };
 
@@ -69,6 +76,21 @@ export const defaultInitState: GameState = {
   eliminatedPlayerNumbers: [],
   modalVisible: null,
   playingMiniGame: null,
+  miniGame: {
+    vote: {
+      availableVoteCount: 0,
+      result: Object.values(PlayerNumber)
+        .map(Number)
+        .filter(isValidPlayerNumber)
+        .reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: 0,
+          }),
+          {} as Record<PlayerNumber, number>,
+        ),
+    },
+  },
 };
 
 export const createGameStore = (initState: GameState = defaultInitState) => {
@@ -113,6 +135,12 @@ export const createGameStore = (initState: GameState = defaultInitState) => {
     },
     setPlayingMiniGame(playingMiniGame) {
       set({ playingMiniGame });
+    },
+    clearMiniGame() {
+      set({
+        playingMiniGame: null,
+        miniGame: { ...defaultInitState.miniGame },
+      });
     },
     clearGameStore() {
       set(defaultInitState);

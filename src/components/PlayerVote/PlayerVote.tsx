@@ -53,7 +53,10 @@ const VotePlayer: React.FC<Props> = ({
 
   return (
     <div
-      className={cn('inline-flex flex-col items-center', className)}
+      className={cn(
+        'inline-flex cursor-pointer flex-col items-center gap-y-2',
+        className,
+      )}
       onClick={handleClick}
     >
       <ProfileImage
@@ -90,7 +93,8 @@ const VotePlayer: React.FC<Props> = ({
         ))}
       </ProfileImage>
 
-      <p>{username}</p>
+      {/* FIXME: font size is too small, need to discuss abuot this */}
+      <p className="text-xs font-semibold">{username}</p>
     </div>
   );
 };

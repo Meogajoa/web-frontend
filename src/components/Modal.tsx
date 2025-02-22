@@ -46,7 +46,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
 
       <DialogPanel
         className={cn(
-          'relative flex size-full duration-300 ease-in-out data-[closed]:opacity-0',
+          'relative size-full duration-300 ease-in-out data-[closed]:opacity-0',
           verticalAlignment === 'top' && 'items-start',
           verticalAlignment === 'center' && 'items-center',
           verticalAlignment === 'bottom' && 'items-end',

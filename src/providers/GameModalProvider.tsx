@@ -10,7 +10,14 @@ import React from 'react';
 
 const GameModalProvider: React.FC = () => {
   const { setCurrentChatRoom } = useRoom();
-  const { modalVisible, time, player, setModalVisible } = useGame();
+  const {
+    modalVisible,
+    time,
+    player,
+    otherPlayers,
+    miniGame: { vote },
+    setModalVisible,
+  } = useGame();
 
   return (
     <>
@@ -25,11 +32,13 @@ const GameModalProvider: React.FC = () => {
       />
       <VoteMiniGameModal
         visible={
-          // player.status === PlayerStatus.Alive &&
+          player.status === PlayerStatus.Alive &&
           modalVisible === GameModal.VoteMiniGame
         }
         // FIXME: Fix the following props
-        availableVoteCount={1}
+        availableVoteCount={vote.availableVoteCount}
+        players={otherPlayers}
+        voteResult={vote.result}
         onVote={noop}
         onCancel={noop}
         onClose={handleClose}

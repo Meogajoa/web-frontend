@@ -11,6 +11,7 @@ export default {
       brand: ['var(--font-brand)', 'sans-serif'],
     },
     fontSize: {
+      xs: ['0.625rem', { lineHeight: '0.746rem' }], // 10px
       sm: ['0.75rem', { lineHeight: '0.875rem' }], // 12px
       base: ['0.875rem', { lineHeight: '1rem' }], // 14px
       lg: ['1rem', { lineHeight: '1.188rem' }], // 16px
