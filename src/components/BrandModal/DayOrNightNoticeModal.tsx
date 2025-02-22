@@ -28,9 +28,10 @@ const DayOrNightNoticeModal: React.FC<Props> = ({
           {t(time === GameTime.Day ? 'dayDescription' : 'nightDescription')}
         </p>
 
-        <p className="text-red mt-3 text-sm font-bold">
+        {/* FIXME: Need to discuss about this */}
+        {/* <p className="text-red mt-3 text-sm font-bold">
           {t(time === GameTime.Day ? 'dayInfo' : 'nightInfo')}
-        </p>
+        </p> */}
       </BrandModal.Body>
 
       <BrandModal.ButtonGroup>
