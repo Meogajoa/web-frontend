@@ -9,19 +9,22 @@ import { cn } from '@/utils/classname';
 import { convertToPlayerNumber, isValidPlayerNumber } from '@/utils/game';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { useIntersection } from 'react-use';
 
 type Props = {
   className?: string;
 };
 
 const RoomMessages = React.memo<Props>(({ className }) => {
-  const containerRef = React.useRef<HTMLUListElement>(null);
-  const bottomRef = React.useRef<HTMLLIElement>(null);
-
   const t = useTranslations('roomRoute.chatMessage');
   const { currentChatRoom } = useRoom();
   const { user } = useUser();
   const { player, otherPlayers } = useGame();
+
+  const lastMessageRef = React.useRef<HTMLLIElement>(null);
+  const lastMessageIntersection = useIntersection(lastMessageRef, {
+    threshold: 0.5,
+  });
 
   const messages = useChatMessages({
     variables: { chatRoom: currentChatRoom },
@@ -29,15 +32,14 @@ const RoomMessages = React.memo<Props>(({ className }) => {
   });
 
   React.useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [currentChatRoom]);
 
   return (
     <ul
       className={cn('space-y-3 overflow-y-auto px-4 py-5 font-bold', className)}
-      ref={containerRef}
     >
-      {messages.map(({ id, content, sender, type }) => {
+      {messages.map(({ id, content, sender, type }, index) => {
         const isSelf =
           sender === user.name || sender === player.number.toString();
 
@@ -51,6 +53,7 @@ const RoomMessages = React.memo<Props>(({ className }) => {
             return (
               <ChatMessageComponent
                 key={id}
+                ref={index === messages.length - 1 ? lastMessageRef : undefined}
                 position={isSelf ? 'right' : 'left'}
                 username={username}
                 message={content}
@@ -65,29 +68,21 @@ const RoomMessages = React.memo<Props>(({ className }) => {
           }
         }
       })}
-
-      <li ref={bottomRef} aria-hidden />
     </ul>
   );
 
   // scroll to bottom when new message is sent
   // when user has scrolled up to see previous messages, don't scroll to bottom
   function scrollToBottom(message: ChatMessage) {
-    if (!containerRef.current) {
-      return;
-    }
-
-    const EPSILON = 100;
-    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-    const isScrolledToBottom =
-      scrollTop + clientHeight >= scrollHeight - EPSILON;
-
-    if (!isScrolledToBottom && message.sender !== user.name) {
+    if (
+      !lastMessageIntersection?.isIntersecting &&
+      message.sender !== user.name
+    ) {
       return;
     }
 
     setTimeout(
-      () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),
+      () => lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' }),
       0,
     );
   }
