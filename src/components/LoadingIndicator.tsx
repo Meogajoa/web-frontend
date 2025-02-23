@@ -1,23 +1,25 @@
 import useDotsString from '@/hooks/misc/useDotsString';
 import { cn } from '@/utils/classname';
-import { getCssVariable } from '@/utils/misc';
+import { getCssVariableValue } from '@/utils/misc';
 import React from 'react';
 import { HashLoader } from 'react-spinners';
 
 type Props<T> = T & {
   className?: string;
-  label: React.ReactNode;
+  label?: React.ReactNode;
+  color?: string | `--color-${string}`;
   loaderComponent?: React.ReactNode | React.FC<T>;
 };
 
 const LoadingIndicator = <T extends object = {}>({
   className,
   label,
+  color: _color,
   loaderComponent: LoaderComponent,
   ...props
 }: Props<T>) => {
   const dots = useDotsString({ maxLength: 3 });
-  const brandRed = getCssVariable({ variableName: '--color-red' });
+  const color = getCssVariableValue(_color || '--color-red');
 
   return (
     <div
@@ -27,17 +29,19 @@ const LoadingIndicator = <T extends object = {}>({
       )}
     >
       {!LoaderComponent ? (
-        <HashLoader color={brandRed} {...props} />
+        <HashLoader color={color} {...props} />
       ) : typeof LoaderComponent === 'function' ? (
-        <LoaderComponent {...(props as T)} />
+        <LoaderComponent color={color} {...(props as T)} />
       ) : (
         LoaderComponent
       )}
 
-      <div className="text-red relative">
-        <span>{label}</span>
-        <span className="absolute">{dots}</span>
-      </div>
+      {label && (
+        <div className="text-red relative">
+          <span>{label}</span>
+          <span className="absolute">{dots}</span>
+        </div>
+      )}
     </div>
   );
 };

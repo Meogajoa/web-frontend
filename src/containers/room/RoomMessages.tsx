@@ -1,4 +1,5 @@
 import { ChatMessage as ChatMessageComponent } from '@/components/ChatMessage';
+import LoadingIndicator from '@/components/LoadingIndicator';
 import { SystemNotice } from '@/components/Notice';
 import useChatMessages from '@/hooks/chat/useMessages';
 import { useGame } from '@/providers/GameProvider';
@@ -9,6 +10,7 @@ import { cn } from '@/utils/classname';
 import { convertToPlayerNumber, isValidPlayerNumber } from '@/utils/game';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { BeatLoader } from 'react-spinners';
 import { useIntersection } from 'react-use';
 
 type Props = {
@@ -17,7 +19,7 @@ type Props = {
 
 const RoomMessages = React.memo<Props>(({ className }) => {
   const t = useTranslations('roomRoute.chatMessage');
-  const { currentChatRoom } = useRoom();
+  const { currentChatRoom, typing } = useRoom();
   const { user } = useUser();
   const { player, otherPlayers } = useGame();
 
@@ -68,6 +70,22 @@ const RoomMessages = React.memo<Props>(({ className }) => {
           }
         }
       })}
+
+      {typing && (
+        <li>
+          <ChatMessageComponent
+            username="myself"
+            position="right"
+            message={
+              <LoadingIndicator
+                loaderComponent={BeatLoader}
+                size={8}
+                speedMultiplier={0.6}
+              />
+            }
+          />
+        </li>
+      )}
     </ul>
   );
 

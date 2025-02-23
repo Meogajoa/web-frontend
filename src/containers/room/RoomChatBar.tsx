@@ -1,5 +1,6 @@
 import { ChatBar } from '@/components/ChatBar';
 import { type TextareaHandle } from '@/components/CustomTextarea';
+import { A_SECOND } from '@/constants/misc';
 import useSessionId from '@/hooks/account/useSessionId';
 import useStompClient from '@/hooks/stomp/useStompClient';
 import { useRoom } from '@/providers/RoomProvider';
@@ -8,6 +9,7 @@ import { assert } from '@/utils/assert';
 import { cn } from '@/utils/classname';
 import { noop } from 'lodash-es';
 import React from 'react';
+import { useDebounce } from 'react-use';
 
 type Props = {
   className?: string;
@@ -18,7 +20,11 @@ const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
   const textareaRef = React.useRef<TextareaHandle>(null);
   const stompClient = useStompClient();
   const sessionId = useSessionId();
-  const { id, currentChatRoom } = useRoom();
+  const { id, currentChatRoom, setTyping } = useRoom();
+
+  useDebounce(() => setTyping(false), 3 * A_SECOND, [
+    textareaRef.current?.getValue(),
+  ]);
 
   return (
     <>
@@ -28,7 +34,7 @@ const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
 
       <ChatBar className={cn('', className)}>
         <ChatBar.MenuButton onMenuClick={noop} />
-        <ChatBar.Textarea ref={textareaRef} onKeyDown={handleSubmitShortcut} />
+        <ChatBar.Textarea ref={textareaRef} onKeyDown={handleKeyDown} />
         <ChatBar.SendButton onSendClick={handleSend} />
       </ChatBar>
     </>
@@ -55,16 +61,17 @@ const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
     });
   }
 
-  function handleSubmitShortcut(
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-  ) {
+  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (
       (event.key === 'Enter' && event.metaKey) ||
       (event.key === 'Enter' && event.ctrlKey)
     ) {
       event.preventDefault();
       handleSend();
+      setTyping(false);
     }
+
+    setTyping(true);
   }
 
   function getMessageDestination(chatRoom: ChatRoom) {

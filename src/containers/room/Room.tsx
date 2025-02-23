@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button';
-import { RoomChatBar } from '@/components/ChatBar';
+import RoomChatBar from '@/containers/room/RoomChatBar';
 import RoomHeaderGame from '@/containers/room/RoomHeaderGame';
 import RoomHeaderLobby from '@/containers/room/RoomHeaderLobby';
 import RoomMessages from '@/containers/room/RoomMessages';

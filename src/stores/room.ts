@@ -10,6 +10,7 @@ export type RoomState = {
   playing: boolean;
   currentChatRoom: ChatRoom;
   messagesByRoom: Record<ChatRoom, ChatMessage[]>;
+  typing: boolean;
 };
 
 export type RoomActions = {
@@ -18,6 +19,7 @@ export type RoomActions = {
   setHostNickname: (nickname: string) => void;
   setPlaying: (isPlaying: boolean) => void;
   setCurrentChatRoom: (chatRoom: ChatRoom) => void;
+  setTyping: (typing: boolean) => void;
   addMessage: (chatRoom: ChatRoom, message: ChatMessage) => void;
   addMessages: (chatRoom: ChatRoom, messages: ChatMessage[]) => void;
   setMessages: (chatRoom: ChatRoom, messages: ChatMessage[]) => void;
@@ -42,6 +44,7 @@ export const defaultInitState: RoomState = {
     }),
     {} as Record<ChatRoom, ChatMessage[]>,
   ),
+  typing: false,
 };
 
 export const createRoomStore = (initState: RoomState = defaultInitState) => {
@@ -61,6 +64,9 @@ export const createRoomStore = (initState: RoomState = defaultInitState) => {
     },
     setCurrentChatRoom(chatRoom) {
       set({ currentChatRoom: chatRoom });
+    },
+    setTyping(typing) {
+      set({ typing });
     },
     addMessage(chatRoom, message) {
       set((state) => ({
