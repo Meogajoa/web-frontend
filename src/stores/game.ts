@@ -42,6 +42,7 @@ export type GameActions = {
   setEliminatedPlayerNumbers: (eliminatedPlayerNumbers: PlayerNumber[]) => void;
   setModalVisible: (modalVisible: Nullable<GameModal>) => void;
   setPlayingMiniGame: (playingMiniGame: Nullable<MiniGame>) => void;
+  setMiniGame: (miniGame: GameState['miniGame']) => void;
   clearMiniGame: () => void;
   clearGameStore: () => void;
 };
@@ -135,6 +136,14 @@ export const createGameStore = (initState: GameState = defaultInitState) => {
     },
     setPlayingMiniGame(playingMiniGame) {
       set({ playingMiniGame });
+    },
+    setMiniGame(miniGame) {
+      set((state) => ({
+        miniGame: {
+          ...state.miniGame,
+          ...miniGame,
+        },
+      }));
     },
     clearMiniGame() {
       set({
