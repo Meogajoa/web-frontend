@@ -7,9 +7,8 @@ import { useRoom } from '@/providers/RoomProvider';
 import { ChatMessageType, ChatRoom } from '@/types/chat';
 import { assert } from '@/utils/assert';
 import { cn } from '@/utils/classname';
-import { noop } from 'lodash-es';
+import { debounce, noop } from 'lodash-es';
 import React from 'react';
-import { useDebounce } from 'react-use';
 
 type Props = {
   className?: string;
@@ -17,26 +16,61 @@ type Props = {
 };
 
 const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
+  const chatBarRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<TextareaHandle>(null);
+  const [height, setHeight] = React.useState(0);
+
   const stompClient = useStompClient();
   const sessionId = useSessionId();
   const { id, currentChatRoom, setTyping } = useRoom();
 
-  useDebounce(() => setTyping(false), 3 * A_SECOND, [
-    textareaRef.current?.getValue(),
-  ]);
+  // Used useMemo instead of useCallback, becaouse debounce from lodash creates a new function every render
+  const debouncedSetTyping = React.useMemo(
+    () => debounce(setTyping, 3 * A_SECOND),
+    [],
+  );
+
+  React.useLayoutEffect(() => {
+    assert(chatBarRef.current, 'chatBarRef.current is null');
+    const rect = chatBarRef.current.getBoundingClientRect();
+    setHeight(rect.height);
+  }, []);
+
+  React.useEffect(() => {
+    assert(chatBarRef.current, 'chatBarRef.current is null');
+    const observer = new ResizeObserver(([entry]) => {
+      const { height } = entry.contentRect;
+      setHeight(height);
+    });
+
+    observer.observe(chatBarRef.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
       {renderPlaceholder && (
-        <div className="h-[3.813rem] shrink-0" aria-hidden />
+        <div
+          className="shrink-0"
+          style={{
+            height: `${height}px`,
+          }}
+          aria-hidden
+        />
       )}
 
-      <ChatBar className={cn('', className)}>
-        <ChatBar.MenuButton onMenuClick={noop} />
-        <ChatBar.Textarea ref={textareaRef} onKeyDown={handleKeyDown} />
-        <ChatBar.SendButton onSendClick={handleSend} />
-      </ChatBar>
+      <div className={cn('', className)} ref={chatBarRef}>
+        <ChatBar>
+          <ChatBar.MenuButton onMenuClick={noop} />
+          <ChatBar.Textarea
+            ref={textareaRef}
+            onKeyDown={handleKeyDown}
+            onInput={handleTextareaChange}
+          />
+          <ChatBar.SendButton onSendClick={handleSend} />
+        </ChatBar>
+      </div>
     </>
   );
 
@@ -69,9 +103,13 @@ const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
       event.preventDefault();
       handleSend();
       setTyping(false);
+      debouncedSetTyping.cancel();
     }
+  }
 
+  function handleTextareaChange() {
     setTyping(true);
+    debouncedSetTyping(false);
   }
 
   function getMessageDestination(chatRoom: ChatRoom) {

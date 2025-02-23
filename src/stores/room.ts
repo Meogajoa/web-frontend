@@ -10,7 +10,7 @@ export type RoomState = {
   playing: boolean;
   currentChatRoom: ChatRoom;
   messagesByRoom: Record<ChatRoom, ChatMessage[]>;
-  typing: boolean;
+  typing?: boolean;
 };
 
 export type RoomActions = {

@@ -57,7 +57,11 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       {!playing ? (
         <>
           <RoomHeaderLobby className="shrink-0" />
-          <RoomUserList />
+          <div className="relative z-10">
+            <div className="bg-gray-5/30 absolute w-full px-4">
+              <RoomUserList />
+            </div>
+          </div>
         </>
       ) : (
         <>

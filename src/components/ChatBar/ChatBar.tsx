@@ -49,17 +49,17 @@ type TextareaProps = {
   className?: string;
   ref: React.RefObject<TextareaHandle>;
   onKeyDown?: React.ComponentProps<'textarea'>['onKeyDown'];
+  onInput?: React.ComponentProps<'textarea'>['onInput'];
 };
 
-const Textarea: React.FC<TextareaProps> = ({ className, ref, onKeyDown }) => {
+const Textarea: React.FC<TextareaProps> = ({ className, ...props }) => {
   return (
     <CustomTextarea
       className={cn(
         'scrollbar-hide scrollbar-primary border-gray-6 text-gray-1 placeholder:text-gray-5 rounded-lg border p-2.5 text-xl outline-hidden transition-all duration-300',
         className,
       )}
-      ref={ref}
-      onKeyDown={onKeyDown}
+      {...props}
     />
   );
 };

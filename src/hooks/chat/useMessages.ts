@@ -44,11 +44,13 @@ const xLogTypeSchema = z.nativeEnum(XLogType);
 const useChatMessages = ({
   variables,
   onNewMessage,
+  onRestore,
 }: {
   variables: {
     chatRoom: ChatRoom;
   };
   onNewMessage?: (message: ChatMessage) => void;
+  onRestore?: (restoredChatRoom: ChatRoom, messages: ChatMessage[]) => void;
 }) => {
   const { user } = useUser();
   const { id, messagesByRoom, playing, addMessage, addMessages } = useRoom();
@@ -111,6 +113,7 @@ const useChatMessages = ({
 
           const chatRoom = convertXChatRoomToChatRoom(xChatRoomHeader);
           addMessages(chatRoom, history.chatLogs as ChatMessage[]);
+          onRestore?.(chatRoom, history.chatLogs as ChatMessage[]);
           break;
         }
         case XLogType.PersonalHistory: {
@@ -141,6 +144,7 @@ const useChatMessages = ({
             }
 
             addMessages(chatRoom, messages);
+            onRestore?.(chatRoom, messages);
           });
 
           break;
@@ -153,7 +157,7 @@ const useChatMessages = ({
 
           const chatRoom = convertXChatRoomToChatRoom(xChatRoomHeader);
           addMessage(chatRoom, message);
-          setTimeout(() => onNewMessage?.(message), 0);
+          onNewMessage?.(message);
           break;
         }
         case XLogType.PersonalSingle: {
@@ -167,7 +171,7 @@ const useChatMessages = ({
             player.number,
           );
           addMessage(chatRoom, personalMessage);
-          setTimeout(() => onNewMessage?.(personalMessage), 0);
+          onNewMessage?.(personalMessage);
           break;
         }
       }
