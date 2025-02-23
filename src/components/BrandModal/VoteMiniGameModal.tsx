@@ -50,7 +50,7 @@ const VoteMiniGameModal: React.FC<Props> = ({
             <PlayerVote
               className={cn(
                 'hover:bg-gray-5 rounded-lg px-3 py-2 transition-colors duration-500',
-                player.number === selectedPlayerNumber && 'bg-gray-5',
+                player.number === selectedPlayerNumber && 'bg-gray-5/35',
               )}
               key={index}
               playerNumber={player.number}

@@ -54,7 +54,6 @@ const ChatRoomListSidebar: React.FC<Props> = ({
         leaveTo="translate-x-full"
       >
         <ChatRoomList
-          onClose={onClose}
           rooms={compact<ChatRoomProps>([
             // General Chat Room
             {
@@ -263,6 +262,7 @@ const ChatRoomListSidebar: React.FC<Props> = ({
               },
             } as ChatRoomProps,
           ])}
+          onClose={onClose}
           onExit={noop}
           onNotificationClick={noop}
         />

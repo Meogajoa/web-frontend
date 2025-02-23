@@ -37,7 +37,7 @@ const ProfileImage: React.FC<React.PropsWithChildren<ProfileImageProps>> = ({
   className,
   size,
   color,
-  playerNumber,
+  playerNumber = PlayerNumber.Invalid,
   src,
   as: Component = 'button',
   onClick: handleClick,

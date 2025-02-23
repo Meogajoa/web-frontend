@@ -39,11 +39,12 @@ const useGamePlayersNoticeHandler = ({ enabled }: { enabled: boolean }) => {
       }
 
       const isBlack = gameUsersNotice.blackTeam.includes(number);
+      const isWhite = gameUsersNotice.whiteTeam.includes(number);
       const isEliminated = gameUsersNotice.eliminated.includes(number);
 
       setPlayerByPlayerNumber(number, {
         status: isEliminated ? PlayerStatus.Eliminated : PlayerStatus.Alive,
-        team: isBlack ? Team.Black : Team.White,
+        team: isBlack ? Team.Black : isWhite ? Team.White : Team.Red,
         number,
       });
     });
