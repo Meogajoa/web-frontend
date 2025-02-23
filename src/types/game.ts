@@ -28,6 +28,15 @@ export enum PlayerStatus {
   Eliminated = 'ELIMINATED',
 }
 
+export type User = {
+  team: Team;
+  number: PlayerNumber;
+  eliminated: boolean;
+  money?: number;
+  isSpy?: boolean;
+  profimeImageSrc?: string;
+};
+
 export type Player = {
   team: Team;
   number: PlayerNumber;
