@@ -11,6 +11,7 @@ import { z } from 'zod';
 enum GameInfoType {
   PlayerInfo = 'USER_INFO',
   Eliminated = 'ELIMINATED_USER',
+  VoteCount = 'AVAILABLE_VOTE_COUNT',
 }
 const gameInfoTypeSchema = z.nativeEnum(GameInfoType);
 
@@ -44,16 +45,29 @@ const eliminatedGameInfoSchema = baseChatMessageSchema.extend({
 });
 export type EliminatedGameInfo = z.infer<typeof eliminatedGameInfoSchema>;
 
+/**
+ * AVAILABLE_VOTE_COUNT
+ */
+const availableVoteCountInfoSchema = baseChatMessageSchema.extend({
+  availableVoteCount: z.number(),
+  userNickname: usernameSchema,
+});
+export type AvailableVoteCountInfo = z.infer<
+  typeof availableVoteCountInfoSchema
+>;
+
 const usePlayerGameInfo = ({
   variables: { username },
   enabled,
   onPlayerInfo: onPlayerInfo,
   onEliminated,
+  onAvailableVoteCount,
 }: {
   variables: { username: string };
   enabled: boolean;
   onPlayerInfo?: (gameInfo: PlayerGameInfo) => void;
   onEliminated?: (gameInfo: EliminatedGameInfo) => void;
+  onAvailableVoteCount?: (gameInfo: AvailableVoteCountInfo) => void;
 }) => {
   useSubscription(
     compact([enabled && `/topic/user/${username}/gameInfo`]),
@@ -72,6 +86,11 @@ const usePlayerGameInfo = ({
         case GameInfoType.Eliminated: {
           const gameInfo = eliminatedGameInfoSchema.parse(jsonBody);
           onEliminated?.(gameInfo);
+          break;
+        }
+        case GameInfoType.VoteCount: {
+          const gameInfo = availableVoteCountInfoSchema.parse(jsonBody);
+          onAvailableVoteCount?.(gameInfo);
           break;
         }
       }

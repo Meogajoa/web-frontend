@@ -1,4 +1,5 @@
 import usePlayerGameInfo, {
+  type AvailableVoteCountInfo,
   type PlayerGameInfo,
 } from '@/hooks/game/usePlayerGameInfo';
 import { useGame } from '@/providers/GameProvider';
@@ -14,7 +15,7 @@ const usePlayerGameInfoHandler = ({ enabled }: { enabled: boolean }) => {
 
   const { user } = useUser();
   const { setPlaying, setCurrentChatRoom, broadcastMessage } = useRoom();
-  const { setPlayer } = useGame();
+  const { miniGame, setPlayer, setMiniGame } = useGame();
 
   usePlayerGameInfo({
     variables: {
@@ -22,6 +23,7 @@ const usePlayerGameInfoHandler = ({ enabled }: { enabled: boolean }) => {
     },
     enabled,
     onPlayerInfo: handlePlayerGameInfo,
+    onAvailableVoteCount: handleAvailableVoteCount,
   });
 
   function handlePlayerGameInfo({ id, player, sendTime }: PlayerGameInfo) {
@@ -45,6 +47,17 @@ const usePlayerGameInfoHandler = ({ enabled }: { enabled: boolean }) => {
       content: t('teamColorSystemMessage', {
         teamColor: player.teamColor,
       }),
+    });
+  }
+
+  function handleAvailableVoteCount({
+    availableVoteCount,
+  }: AvailableVoteCountInfo) {
+    setMiniGame({
+      vote: {
+        ...miniGame.vote,
+        availableVoteCount,
+      },
     });
   }
 };
