@@ -9,14 +9,24 @@ type Props = {
   className?: string;
   position: 'left' | 'right';
   username: string;
-  message: string;
+  message?: React.ReactNode;
   isCumulative?: boolean;
   color?: ProfileImageProps['color'];
   src?: ProfileImageProps['src'];
+  ref?: React.Ref<HTMLLIElement>;
 };
 
 const ChatMessage = React.memo<Props>(
-  ({ className, position, username, message, isCumulative, color, src }) => {
+  ({
+    className,
+    position,
+    username,
+    message,
+    isCumulative,
+    color,
+    src,
+    ref,
+  }) => {
     return (
       <li
         className={cn(
@@ -24,6 +34,7 @@ const ChatMessage = React.memo<Props>(
           position === 'right' && 'justify-end',
           className,
         )}
+        ref={ref}
       >
         {position === 'left' && (
           <ProfileImage

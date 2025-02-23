@@ -5,14 +5,14 @@ import useSignIn, {
   type SignInResponse,
 } from '@/hooks/account/useSignIn';
 import { useRouter } from '@/i18n/routing';
-import { useAccount } from '@/providers/AccountProvider';
+import { useUser } from '@/providers/UserProvider';
 import { type AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 
 const SignInPage = () => {
   const { register, handleSubmit } = useForm<SignInForm>();
   const router = useRouter();
-  const { setAccount } = useAccount();
+  const { setUser } = useUser();
 
   const { signIn } = useSignIn({
     onSuccess: handleSignInSuccess,
@@ -72,7 +72,7 @@ const SignInPage = () => {
 
   function handleSignInSuccess(data: SignInResponse) {
     localStorage.setItem('sessionId', data.sessionId);
-    setAccount({ nickname: data.user.nickname });
+    setUser({ name: data.user.nickname });
     router.push('/home');
   }
 

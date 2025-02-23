@@ -1,5 +1,5 @@
+import { A_MINUTE, A_SECOND } from '@/constants/misc';
 import { server } from '@/utils/axios';
-import { A_MINUTE, A_SECOND } from '@/utils/constants';
 import { sleep } from '@/utils/misc';
 import {
   type InfiniteData,

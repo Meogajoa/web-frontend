@@ -1,24 +1,25 @@
-import { useAccount } from '@/providers/AccountProvider';
+import useSubscription from '@/hooks/stomp/useSubscription';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
+import { useUser } from '@/providers/UserProvider';
 import { defaultInitState } from '@/stores/room';
 import {
+  baseChatMessageSchema,
   chatLogsSchema,
-  chatMessageSchema,
+  ChatMessageType,
   ChatRoom,
   personalChatLogsSchema,
   personalChatMessageSchema,
   type ChatMessage,
 } from '@/types/chat';
-import { Team } from '@/types/game';
+import { PlayerStatus, Team } from '@/types/game';
 import {
   convertToPersonalChatRoom,
   getPersonalChatRoomFromMessage,
   isPersonalChatRoom,
 } from '@/utils/chat';
-import { isValidUserNumber } from '@/utils/game';
+import { isValidPlayerNumber } from '@/utils/game';
 import { compact } from 'lodash-es';
-import { useSubscription } from 'react-stomp-hooks';
 import { z } from 'zod';
 
 enum XChatRoom {
@@ -43,46 +44,53 @@ const xLogTypeSchema = z.nativeEnum(XLogType);
 const useChatMessages = ({
   variables,
   onNewMessage,
+  onRestore,
 }: {
   variables: {
     chatRoom: ChatRoom;
   };
   onNewMessage?: (message: ChatMessage) => void;
+  onRestore?: (restoredChatRoom: ChatRoom, messages: ChatMessage[]) => void;
 }) => {
-  const { account } = useAccount();
-  const { id, messagesByRoom, isPlaying, addMessage, setMessages } = useRoom();
-  const { user } = useGame();
+  const { user } = useUser();
+  const { id, messagesByRoom, playing, addMessage, addMessages } = useRoom();
+  const { player } = useGame();
 
   useSubscription(
     compact([
       // Room lobby
-      !isPlaying && `/topic/room/${id}/chat`,
+      !playing && `/topic/room/${id}/chat`,
 
       // In-game general
-      isPlaying && `/topic/game/${id}/chat`,
+      playing && `/topic/game/${id}/chat`,
 
       // In-game black
-      isPlaying &&
-        (user.team === Team.Black || user.eliminated) &&
+      playing &&
+        (player.team === Team.Black ||
+          player.status === PlayerStatus.Eliminated) &&
         `/topic/game/${id}/chat/black`,
 
       // In-game white
-      isPlaying &&
-        (user.team === Team.White || user.eliminated) &&
+      playing &&
+        (player.team === Team.White ||
+          player.status === PlayerStatus.Eliminated) &&
         `/topic/game/${id}/chat/white`,
 
       // In-game red
-      isPlaying &&
-        (user.team === Team.Red || user.eliminated) &&
+      playing &&
+        (player.team === Team.Red ||
+          player.status === PlayerStatus.Eliminated) &&
         `/topic/game/${id}/chat/red`,
 
       // In-game eliminated
-      isPlaying && user.eliminated && `/topic/game/${id}/chat/eliminated`,
+      playing &&
+        player.status === PlayerStatus.Eliminated &&
+        `/topic/game/${id}/chat/eliminated`,
 
       // In-game personal
-      isPlaying &&
-        !user.eliminated &&
-        `/topic/user/${account.nickname}/gameChat`,
+      playing &&
+        player.status === PlayerStatus.Alive &&
+        `/topic/user/${user.name}/gameChat`,
     ]),
     ({ headers, body }) => {
       const jsonBody = JSON.parse(body);
@@ -98,11 +106,14 @@ const useChatMessages = ({
       switch (xLogTypeHeader) {
         case XLogType.History: {
           const history = chatLogsSchema.parse(jsonBody);
-          history.chatLogs.forEach((message) => {
-            message.id = message.sendTime.getTime().toString(); // FIXME: Replace this with actual id later
-          });
-          const chatRoom = convertToChatRoom(xChatRoomHeader);
-          setMessages(chatRoom, history.chatLogs ?? []);
+          history.chatLogs = history.chatLogs.map((message) => ({
+            ...message,
+            type: ChatMessageType.Chat,
+          }));
+
+          const chatRoom = convertXChatRoomToChatRoom(xChatRoomHeader);
+          addMessages(chatRoom, history.chatLogs as ChatMessage[]);
+          onRestore?.(chatRoom, history.chatLogs as ChatMessage[]);
           break;
         }
         case XLogType.PersonalHistory: {
@@ -114,17 +125,16 @@ const useChatMessages = ({
           const newMessagesMap = { ...defaultInitState.messagesByRoom };
 
           history.personalChatLogs?.forEach((_message) => {
-            const message = { ..._message };
-            message.id = message.sendTime.getTime().toString(); // FIXME: Replace this with actual id later
+            const message = { ..._message, type: ChatMessageType.Chat };
             const chatRoom = getPersonalChatRoomFromMessage(
               message,
-              user.number,
+              player.number,
             );
             newMessagesMap[chatRoom].push(message);
           });
 
           Object.entries(newMessagesMap).forEach(([_chatRoom, messages]) => {
-            if (!isValidUserNumber(Number(_chatRoom))) {
+            if (!isValidPlayerNumber(Number(_chatRoom))) {
               return;
             }
 
@@ -133,28 +143,35 @@ const useChatMessages = ({
               return;
             }
 
-            setMessages(chatRoom, messages);
+            addMessages(chatRoom, messages);
+            onRestore?.(chatRoom, messages);
           });
 
           break;
         }
         case XLogType.Single: {
-          const message = chatMessageSchema.parse(jsonBody);
-          message.id = message.sendTime.getTime().toString(); // FIXME: Replace this with actual id later
-          const chatRoom = convertToChatRoom(xChatRoomHeader);
+          const message = {
+            ...baseChatMessageSchema.parse(jsonBody),
+            type: ChatMessageType.Chat,
+          };
+
+          const chatRoom = convertXChatRoomToChatRoom(xChatRoomHeader);
           addMessage(chatRoom, message);
-          setTimeout(() => onNewMessage?.(message), 0);
+          onNewMessage?.(message);
           break;
         }
         case XLogType.PersonalSingle: {
-          const personalMessage = personalChatMessageSchema.parse(jsonBody);
-          personalMessage.id = personalMessage.sendTime.getTime().toString(); // FIXME: Replace this with actual id later
+          const personalMessage = {
+            ...personalChatMessageSchema.parse(jsonBody),
+            type: ChatMessageType.Chat,
+          };
+
           const chatRoom = getPersonalChatRoomFromMessage(
             personalMessage,
-            user.number,
+            player.number,
           );
           addMessage(chatRoom, personalMessage);
-          setTimeout(() => onNewMessage?.(personalMessage), 0);
+          onNewMessage?.(personalMessage);
           break;
         }
       }
@@ -164,7 +181,7 @@ const useChatMessages = ({
   return messagesByRoom[variables.chatRoom];
 };
 
-const convertToChatRoom = (xChatRoom: XChatRoom): ChatRoom => {
+const convertXChatRoomToChatRoom = (xChatRoom: XChatRoom): ChatRoom => {
   switch (xChatRoom) {
     case XChatRoom.Lobby:
       return ChatRoom.Lobby;

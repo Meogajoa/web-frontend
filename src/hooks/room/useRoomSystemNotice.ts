@@ -1,4 +1,4 @@
-import { useSubscription } from 'react-stomp-hooks';
+import useSubscription from '@/hooks/stomp/useSubscription';
 import { z } from 'zod';
 
 enum RoomSystemNoticeType {

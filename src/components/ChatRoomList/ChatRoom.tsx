@@ -7,7 +7,7 @@ import React from 'react';
 export type ChatRoomProps = {
   className?: string;
   title: string;
-  content: string;
+  content: string | (() => string);
   isSpy?: boolean;
   hasAccess?: boolean;
   notice?: number;
@@ -83,7 +83,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
             hasAccess && 'text-gray-5',
           )}
         >
-          {content}
+          {typeof content === 'function' ? content() : content}
         </div>
       </div>
 

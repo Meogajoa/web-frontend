@@ -46,11 +46,17 @@
     "chatRoom": {
       "emptyContent": "대화를 시작해 보세요.",
       "noAccessToOpponentChatRoom": "(상대팀 채팅방은 볼 수 없습니다.)",
-      "noAccessToEliminatedChatRoom": "(탈락자 채팅방은 볼 수 없습니다.)"
+      "noAccessToEliminatedChatRoom": "(탈락자 채팅방은 볼 수 없습니다.)",
+      "noAccessWhenNight": "(밤에는 대화할 수 없습니다.)"
     },
     "chatMessage": {
-      "inGameUsername": "{username}번 유저"
-    }
+      "inGameUsername": "{playerNumber}번 유저",
+      "teamColorSystemMessage": "당신은 {teamColor, select, BLACK {흑팀} WHITE {백팀} other {빨팀}}입니다.",
+      "teamChatStartSystemMessage": "팀원 {userNames}님과\n팀 채팅을 시작합니다.",
+      "daySystemMessage": "낮이 되었습니다.\n전체 채팅방으로 이동해 미니게임을 진행해 주시기 바랍니다.",
+      "nightSystemMessage": "밤이 되었습니다.\n각자 팀 채팅방으로 이동하여 투표를 진행해주시기 바랍니다."
+    },
+    "voteMiniGameButton": "투표하러 가기"
   },
   "bottomNavigation": {
     "store": "상점",
@@ -69,5 +75,20 @@
     "roomPasswordLabel": "잠금 처리된 방입니다.\n비밀번호를 입력하세요.",
     "cancelButton": "취소",
     "completeButton": "입력 완료"
+  },
+  "dayOrNightNoticeModal": {
+    "title": "공지",
+    "dayDescription": "낮이 되었습니다.\n전체 채팅방으로 이동해주세요.",
+    "nightDescription": "밤이 되었습니다.\n팀 채팅방으로 이동해주세요.",
+    "dayInfo": "다음 낮에 전체 채팅방이 리셋됩니다.",
+    "nightInfo": "다음 밤에 팀 채팅방이 리셋됩니다.",
+    "moveButton": "이동"
+  },
+  "voteMiniGameModal": {
+    "title": "투표",
+    "availableVoteCount": "사용 가능 투표권: {voteCount}개",
+    "voteButton": "투표",
+    "cancelButton": "취소",
+    "playerUsername": "{playerNumber}번 유저"
   }
 }

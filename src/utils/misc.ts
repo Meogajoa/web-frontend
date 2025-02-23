@@ -3,13 +3,11 @@ export const sleep = (ms: number) =>
 
 export const delay = sleep;
 
-export const getCssVariable = ({
-  variableName,
-  fallback = '#ffffff',
-}: {
-  variableName: string;
-  fallback?: string;
-}) => {
+export const getCssVariableValue = (
+  variableName: `--color-${string}` | string,
+) => {
+  const fallback = '#ffffff';
+
   if (typeof document !== 'undefined') {
     return (
       getComputedStyle(document.documentElement).getPropertyValue(

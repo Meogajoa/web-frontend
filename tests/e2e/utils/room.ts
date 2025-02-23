@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { homeUrl } from '@tests/constants/urls';
 import { type TestRoom } from '@tests/types/room';
 

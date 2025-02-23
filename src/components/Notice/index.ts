@@ -1,2 +1,3 @@
-import Notice from '@/components/Notice/Notice';
-export { Notice };
+import SystemNotice from '@/components/Notice/SystemNotice';
+
+export { SystemNotice };

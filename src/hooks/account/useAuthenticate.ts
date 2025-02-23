@@ -1,6 +1,6 @@
+import { A_SECOND } from '@/constants/misc';
 import useSessionId from '@/hooks/account/useSessionId';
 import { server } from '@/utils/axios';
-import { A_SECOND } from '@/utils/constants';
 import { sleep } from '@/utils/misc';
 import { useMutation } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';

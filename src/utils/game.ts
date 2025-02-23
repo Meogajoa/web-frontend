@@ -1,22 +1,22 @@
-import { UserNumber } from '@/types/game';
+import { PlayerNumber } from '@/types/game';
 import type { Maybe } from '@/types/misc';
 
-export const convertToUserNumber = (
-  input: Maybe<UserNumber | string | number>,
+export const convertToPlayerNumber = (
+  input: Maybe<PlayerNumber | string | number>,
 ) => {
   const number = Number(input);
-  if (!isValidUserNumber(number)) {
-    return UserNumber.Invalid;
+  if (!isValidPlayerNumber(number)) {
+    return PlayerNumber.Invalid;
   }
 
-  return number as UserNumber;
+  return number as PlayerNumber;
 };
 
-export const isValidUserNumber = (number: number) => {
+export const isValidPlayerNumber = (number: number) => {
   return (
     !Number.isNaN(number) &&
     Number.isInteger(number) &&
-    number >= UserNumber.One &&
-    number <= UserNumber.Nine
+    number >= PlayerNumber.One &&
+    number <= PlayerNumber.Nine
   );
 };

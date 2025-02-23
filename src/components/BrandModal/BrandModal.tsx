@@ -18,10 +18,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
   ...props
 }) => {
   return (
-    <Modal
-      className={cn('bg-gray-6 flex size-fit max-w-lg flex-col', className)}
-      {...props}
-    >
+    <Modal className={cn('bg-gray-6 size-fit max-w-lg', className)} {...props}>
       {children}
     </Modal>
   );
@@ -102,9 +99,7 @@ const ButtonGroup: React.FC<React.PropsWithChildren<ButtonGroup>> = ({
   children,
 }) => {
   return (
-    <div
-      className={cn('flex items-center justify-center gap-x-8 p-5', className)}
-    >
+    <div className={cn('flex justify-center space-x-8 p-5', className)}>
       {children}
     </div>
   );
@@ -114,6 +109,7 @@ type ModalButtonProps = {
   className?: string;
   kind: 'yes' | 'no';
   type?: React.ComponentProps<'button'>['type'];
+  disabled?: boolean;
   onClick?: () => void;
   'data-testid'?: string;
 };
@@ -122,6 +118,7 @@ const ModalButton: React.FC<React.PropsWithChildren<ModalButtonProps>> = ({
   className,
   kind,
   type,
+  disabled,
   onClick: handleClick,
   'data-testid': dataTestId,
   children,
@@ -133,6 +130,7 @@ const ModalButton: React.FC<React.PropsWithChildren<ModalButtonProps>> = ({
       size="lg"
       variant={kind === 'yes' ? 'primary' : 'secondary'}
       type={type}
+      disabled={disabled}
       onClick={handleClick}
       data-testid={dataTestId}
     >

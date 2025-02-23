@@ -1,9 +1,10 @@
-import { Team, UserNumber } from '@/types/game';
+import { PlayerNumber, Team } from '@/types/game';
 import { cn } from '@/utils/classname';
 import { cva, type VariantProps } from 'class-variance-authority';
+import Image from 'next/image';
 import React from 'react';
 
-const variants = cva('relative rounded-[0.625rem]', {
+const variants = cva('relative overflow-clip rounded-[0.625rem]', {
   variants: {
     size: {
       sm: 'size-5.5 rounded-[0.3rem]',
@@ -26,35 +27,39 @@ const variants = cva('relative rounded-[0.625rem]', {
 
 export type ProfileImageProps = VariantProps<typeof variants> & {
   className?: string;
-  as?: React.ElementType;
+  playerNumber?: PlayerNumber;
   src?: string;
-  userNumber?: UserNumber;
-  onProfileClick?: () => void;
+  as?: React.ElementType;
+  onClick?: () => void;
 };
 
 const ProfileImage: React.FC<React.PropsWithChildren<ProfileImageProps>> = ({
   className,
   size,
   color,
-  as: Component = 'button',
+  playerNumber = PlayerNumber.Invalid,
   src,
-  userNumber = UserNumber.Invalid,
-  onProfileClick: handleProfileClick,
+  as: Component = 'button',
+  onClick: handleClick,
   children,
-  ...props
 }) => {
   return (
     <Component
-      className={cn(variants({ size, color }), 'bg-cover bg-center', className)}
-      style={{
-        backgroundImage: `url(${src})`,
-      }}
-      onClick={handleProfileClick}
-      {...props}
+      className={cn(variants({ size, color }), className)}
+      onClick={handleClick}
     >
-      {userNumber > 0 && (
+      {src && (
+        <Image
+          className="object-cover object-center"
+          src={src}
+          alt="profile"
+          fill
+        />
+      )}
+
+      {playerNumber !== PlayerNumber.Invalid && (
         <mark className="bg-gray-4 absolute top-0.5 right-0.5 flex size-6 items-center justify-center rounded-lg text-[0.625rem] font-bold text-black">
-          {userNumber}
+          {playerNumber}
         </mark>
       )}
 

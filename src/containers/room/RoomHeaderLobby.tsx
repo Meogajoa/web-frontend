@@ -3,8 +3,8 @@ import { MAX_USERS } from '@/constants/game';
 import useStartGame from '@/hooks/game/useStartGame';
 import useRoomUsersNotice from '@/hooks/room/useRoomUsersNotice';
 import { useRouter } from '@/i18n/routing';
-import { useAccount } from '@/providers/AccountProvider';
 import { useRoom } from '@/providers/RoomProvider';
+import { useUser } from '@/providers/UserProvider';
 import { cn } from '@/utils/classname';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { type AxiosError } from 'axios';
@@ -17,7 +17,7 @@ type Props = {
 
 const RoomHeaderLobby = React.memo<Props>(({ className }) => {
   const router = useRouter();
-  const { account } = useAccount();
+  const { user } = useUser();
 
   const { id } = useRoom();
   const { users } = useRoomUsersNotice({ variables: { id } });
@@ -41,7 +41,7 @@ const RoomHeaderLobby = React.memo<Props>(({ className }) => {
 
       <h2 className="ml-2">{title}</h2>
 
-      {account.nickname === hostNickname && (
+      {user.name === hostNickname && (
         <Button
           className="ml-auto px-4"
           variant="primary"

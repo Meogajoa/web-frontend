@@ -1,6 +1,6 @@
 'use client';
 
-import { A_MINUTE } from '@/utils/constants';
+import { A_MINUTE } from '@/constants/misc';
 import {
   isServer,
   QueryClient,

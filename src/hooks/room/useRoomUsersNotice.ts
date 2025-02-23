@@ -1,6 +1,6 @@
-import { usernameSchema } from '@/types/account';
+import useSubscription from '@/hooks/stomp/useSubscription';
+import { usernameSchema } from '@/types/user';
 import React from 'react';
-import { useSubscription } from 'react-stomp-hooks';
 import { z } from 'zod';
 
 const useRoomUsersNotice = ({

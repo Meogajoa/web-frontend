@@ -1,74 +1,158 @@
-import { GameTime, Team, type User, UserNumber } from '@/types/game';
-import { isValidUserNumber } from '@/utils/game';
+import {
+  GameTime,
+  PlayerNumber,
+  PlayerStatus,
+  Team,
+  type GameModal,
+  type MiniGame,
+  type Player,
+} from '@/types/game';
+import { type Nullable, type Optional } from '@/types/misc';
+import { isValidPlayerNumber } from '@/utils/game';
 import { createStore } from 'zustand/vanilla';
 
 export type GameState = {
-  user: User;
-  otherUsers: Record<UserNumber, User>;
+  player: Player;
+  otherPlayers: Record<PlayerNumber, Player>;
   time: GameTime;
   nthDay: number;
-  whiteTeamUsers: UserNumber[];
-  blackTeamUsers: UserNumber[];
-  redTeamUsers: UserNumber[];
-  eliminatedUsers: UserNumber[];
+  whitePlayerNumbers: PlayerNumber[];
+  blackPlayerNumbers: PlayerNumber[];
+  redPlayerNumbers: PlayerNumber[];
+  eliminatedPlayerNumbers: PlayerNumber[];
+  modalVisible: Nullable<GameModal>;
+  playingMiniGame: Nullable<MiniGame>;
+  miniGame: {
+    vote: {
+      availableVoteCount: number;
+      result: Record<PlayerNumber, number>;
+    };
+  };
 };
 
 export type GameActions = {
-  setUser: (user: User) => void;
-  setUserByNumber: (userNumber: UserNumber, user: User) => void;
+  setPlayer: (player: Player) => void;
+  setPlayerByPlayerNumber: (playerNumber: PlayerNumber, player: Player) => void;
   setTime: (time: GameTime) => void;
   setNthDay: (nthDay: number) => void;
-  setWhiteTeamUsers: (whiteTeamUsers: UserNumber[]) => void;
-  setBlackTeamUsers: (blackTeamUsers: UserNumber[]) => void;
-  setRedTeamUsers: (redTeamUsers: UserNumber[]) => void;
-  setEliminatedUsers: (eliminatedUsers: UserNumber[]) => void;
+  getTeamPlayers: (team: Optional<Team>) => Player[];
+  setWhitePlayerNumbers: (whitePlayerNumbers: PlayerNumber[]) => void;
+  setBlackPlayerNumbers: (blackPlayerNumbers: PlayerNumber[]) => void;
+  setRedPlayerNumbers: (redPlayerNumbers: PlayerNumber[]) => void;
+  setEliminatedPlayerNumbers: (eliminatedPlayerNumbers: PlayerNumber[]) => void;
+  setModalVisible: (modalVisible: Nullable<GameModal>) => void;
+  setPlayingMiniGame: (playingMiniGame: Nullable<MiniGame>) => void;
+  setMiniGame: (miniGame: GameState['miniGame']) => void;
+  clearMiniGame: () => void;
+  clearGameStore: () => void;
 };
 
 export type GameStore = GameState & GameActions;
 
 export const defaultInitState: GameState = {
-  user: {
+  player: {
     team: Team.Invalid,
-    number: 0,
-    eliminated: true,
+    number: PlayerNumber.Invalid,
+    status: PlayerStatus.Invalid,
   },
-  otherUsers: Object.values(UserNumber)
-    .filter((key) => isValidUserNumber(Number(key)))
+  otherPlayers: Object.values(PlayerNumber)
+    .map(Number)
+    .filter(isValidPlayerNumber)
     .reduce(
       (acc, key) => ({
         ...acc,
         [key]: {
           team: Team.Invalid,
-          number: 0,
-          eliminated: true,
-        } as User,
+          number: PlayerNumber.Invalid,
+          status: PlayerStatus.Invalid,
+        } as Player,
       }),
-      {} as Record<UserNumber, User>,
+      {} as Record<PlayerNumber, Player>,
     ),
   time: GameTime.Invalid,
   nthDay: 0,
-  whiteTeamUsers: [],
-  blackTeamUsers: [],
-  redTeamUsers: [],
-  eliminatedUsers: [],
+  whitePlayerNumbers: [],
+  blackPlayerNumbers: [],
+  redPlayerNumbers: [],
+  eliminatedPlayerNumbers: [],
+  modalVisible: null,
+  playingMiniGame: null,
+  miniGame: {
+    vote: {
+      availableVoteCount: 0,
+      result: Object.values(PlayerNumber)
+        .map(Number)
+        .filter(isValidPlayerNumber)
+        .reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: 0,
+          }),
+          {} as Record<PlayerNumber, number>,
+        ),
+    },
+  },
 };
 
 export const createGameStore = (initState: GameState = defaultInitState) => {
-  return createStore<GameStore>()((set) => ({
+  return createStore<GameStore>()((set, get) => ({
     ...initState,
-    setUser: (user) => set({ user }),
-    setUserByNumber: (userNumber, user) =>
+    setPlayer(player) {
+      set({ player });
+    },
+    setPlayerByPlayerNumber(playerNumber, player) {
       set((state) => ({
-        otherUsers: {
-          ...state.otherUsers,
-          [userNumber]: user,
+        otherPlayers: {
+          ...state.otherPlayers,
+          [playerNumber]: player,
         },
-      })),
-    setTime: (time) => set({ time }),
-    setNthDay: (nthDay) => set({ nthDay }),
-    setWhiteTeamUsers: (whiteTeamUsers) => set({ whiteTeamUsers }),
-    setBlackTeamUsers: (blackTeamUsers) => set({ blackTeamUsers }),
-    setRedTeamUsers: (redTeamUsers) => set({ redTeamUsers }),
-    setEliminatedUsers: (eliminatedUsers) => set({ eliminatedUsers }),
+      }));
+    },
+    setTime(time) {
+      set({ time });
+    },
+    setNthDay(nthDay) {
+      set({ nthDay });
+    },
+    getTeamPlayers(team) {
+      return Object.values(get().otherPlayers).filter(
+        (player) => player.team === (team ?? get().player.team),
+      );
+    },
+    setWhitePlayerNumbers(whitePlayerNumbers) {
+      set({ whitePlayerNumbers });
+    },
+    setBlackPlayerNumbers(blackPlayerNumbers) {
+      set({ blackPlayerNumbers });
+    },
+    setRedPlayerNumbers(redPlayerNumbers) {
+      set({ redPlayerNumbers });
+    },
+    setEliminatedPlayerNumbers(eliminatedPlayerNumbers) {
+      set({ eliminatedPlayerNumbers });
+    },
+    setModalVisible(modalVisible) {
+      set({ modalVisible });
+    },
+    setPlayingMiniGame(playingMiniGame) {
+      set({ playingMiniGame });
+    },
+    setMiniGame(miniGame) {
+      set((state) => ({
+        miniGame: {
+          ...state.miniGame,
+          ...miniGame,
+        },
+      }));
+    },
+    clearMiniGame() {
+      set({
+        playingMiniGame: null,
+        miniGame: { ...defaultInitState.miniGame },
+      });
+    },
+    clearGameStore() {
+      set(defaultInitState);
+    },
   }));
 };

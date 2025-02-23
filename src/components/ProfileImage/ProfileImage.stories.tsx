@@ -18,7 +18,7 @@ const meta: Meta<typeof ProfileImage> = {
       control: 'select',
       options: [Team.Black, Team.White, Team.Red],
     },
-    userNumber: {
+    playerNumber: {
       description: '숫자 박스 값',
       control: {
         type: 'range',
@@ -38,7 +38,7 @@ export const Default: Story = {
   args: {
     size: 'xl',
     color: Team.Black,
-    userNumber: 1,
+    playerNumber: 1,
     src: ExampleImage.src,
   },
 };

@@ -28,7 +28,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({
         className="flex w-fit cursor-pointer items-center justify-start gap-x-2 py-4"
         onClick={onClose}
       >
-        <LeftArrowIcon className="size-4" />
+        <LeftArrowIcon className="-mt-0.5 size-4" />
         <div className="text-2xl font-semibold text-white">채팅방 이동</div>
       </button>
 

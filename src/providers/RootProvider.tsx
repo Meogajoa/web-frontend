@@ -1,8 +1,8 @@
 'use client';
 
-import { AccountStoreProvider } from '@/providers/AccountProvider';
 import TanstackQueryProvider from '@/providers/TanstackQueryProvider';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import { UserStoreProvider } from '@/providers/UserProvider';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
@@ -14,9 +14,9 @@ const RootProvider: React.FC<React.PropsWithChildren<Props>> = ({
   return (
     <>
       <ThemeProvider bgColor="var(--color-white)">
-        <AccountStoreProvider>
+        <UserStoreProvider>
           <TanstackQueryProvider>{children}</TanstackQueryProvider>
-        </AccountStoreProvider>
+        </UserStoreProvider>
       </ThemeProvider>
 
       {/**

@@ -1,4 +1,4 @@
-import { ChatRoomListSidebar } from '@/components/ChatRoomList';
+import ChatRoomListSidebar from '@/containers/room/ChatRoomListSidebar';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
 import CartFillIcon from '@/svgs/CartFillIcon';
@@ -15,7 +15,7 @@ type Props = {
 
 const RoomHeaderGame = React.memo<Props>(({ className }) => {
   const t = useTranslations('roomRoute');
-  const { nthDay, time, user } = useGame();
+  const { nthDay, time, player } = useGame();
   const { currentChatRoom } = useRoom();
 
   const [sidebarVisible, setSidebarVisible] = React.useState(false);
@@ -32,8 +32,8 @@ const RoomHeaderGame = React.memo<Props>(({ className }) => {
       <header
         className={cn(
           'border-b-gray-5/60 relative flex h-22 items-center justify-between border-b-2 px-4',
-          user.team === Team.Black && 'border-b-gray-2/20',
-          user.team === Team.Red && 'border-b-red/10 bg-white',
+          player.team === Team.Black && 'border-b-gray-2/20',
+          player.team === Team.Red && 'border-b-red/10 bg-white',
           className,
         )}
       >
@@ -46,7 +46,7 @@ const RoomHeaderGame = React.memo<Props>(({ className }) => {
         </div>
 
         <div className="z-10 flex items-center gap-x-6">
-          <span className="text-lg font-bold">₩{user.money}</span>
+          <span className="text-lg font-bold">₩{player.money}</span>
 
           <button className="cursor-pointer">
             <CartFillIcon className="fill-gray-1 size-6" />
@@ -80,20 +80,20 @@ type TimerProps = {
 };
 
 const Timer: React.FC<TimerProps> = ({ className }) => {
-  const { user } = useGame();
+  const { player } = useGame();
 
   return (
     <div
       className={cn(
         'bg-gray-6 flex gap-x-1 rounded-full p-1',
-        user.team === Team.Black && 'bg-gray-3',
+        player.team === Team.Black && 'bg-gray-3',
         className,
       )}
     >
       <button
         className={cn(
           'bg-gray-6 ring-gray-5/60 rounded-full ring drop-shadow-sm',
-          user.team === Team.Black && 'bg-gray-3 ring-gray-2/30',
+          player.team === Team.Black && 'bg-gray-3 ring-gray-2/30',
         )}
         onClick={handleMinusClick}
       >
@@ -107,7 +107,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
       <button
         className={cn(
           'bg-gray-6 ring-gray-5/60 rounded-full ring drop-shadow-sm',
-          user.team === Team.Black && 'bg-gray-3 ring-gray-2/30',
+          player.team === Team.Black && 'bg-gray-3 ring-gray-2/30',
         )}
         onClick={handlePlusClick}
       >

@@ -1,3 +1,4 @@
+import { STOMP_CLIENT_NAME } from '@/constants/stomp';
 import useSessionId from '@/hooks/account/useSessionId';
 import { CONFIGS } from '@/utils/config';
 import React, { type PropsWithChildren } from 'react';
@@ -20,6 +21,7 @@ const StompProvider = React.memo<PropsWithChildren<Props>>(
         }}
         onConnect={onConnect}
         onWebSocketError={onError}
+        name={STOMP_CLIENT_NAME}
       >
         {children}
       </StompSessionProvider>

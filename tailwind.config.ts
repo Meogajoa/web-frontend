@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss';
-import plugin from 'tailwindcss/plugin';
 
 export default {
   content: [
@@ -12,6 +11,7 @@ export default {
       brand: ['var(--font-brand)', 'sans-serif'],
     },
     fontSize: {
+      xs: ['0.625rem', { lineHeight: '0.746rem' }], // 10px
       sm: ['0.75rem', { lineHeight: '0.875rem' }], // 12px
       base: ['0.875rem', { lineHeight: '1rem' }], // 14px
       lg: ['1rem', { lineHeight: '1.188rem' }], // 16px
@@ -26,16 +26,4 @@ export default {
       },
     },
   },
-  plugins: [
-    plugin(function ({ addUtilities }) {
-      addUtilities({
-        '.h-screen': {
-          height: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
-        },
-        '.w-screen': {
-          width: ['100vw /* fallback for Opera, IE and etc. */', '100dvw'],
-        },
-      });
-    }),
-  ],
 } satisfies Config;
