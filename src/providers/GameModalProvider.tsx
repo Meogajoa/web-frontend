@@ -1,15 +1,20 @@
 import DayOrNightNoticeModal from '@/components/BrandModal/DayOrNightNoticeModal';
 import VoteMiniGameModal from '@/components/BrandModal/VoteMiniGameModal';
+import useStompClient from '@/hooks/stomp/useStompClient';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
 import { ChatRoom } from '@/types/chat';
-import { GameModal, GameTime, PlayerStatus } from '@/types/game';
+import {
+  GameModal,
+  GameTime,
+  type PlayerNumber,
+  PlayerStatus,
+} from '@/types/game';
 import { convertToTeamChatRoom } from '@/utils/chat';
-import { noop } from 'lodash-es';
 import React from 'react';
 
 const GameModalProvider: React.FC = () => {
-  const { setCurrentChatRoom } = useRoom();
+  const { id, setCurrentChatRoom } = useRoom();
   const {
     modalVisible,
     time,
@@ -18,6 +23,7 @@ const GameModalProvider: React.FC = () => {
     miniGame: { vote },
     setModalVisible,
   } = useGame();
+  const stompClient = useStompClient();
 
   return (
     <>
@@ -35,12 +41,11 @@ const GameModalProvider: React.FC = () => {
           player.status === PlayerStatus.Alive &&
           modalVisible === GameModal.VoteMiniGame
         }
-        // FIXME: Fix the following props
         availableVoteCount={vote.availableVoteCount}
         players={otherPlayers}
         voteResult={vote.result}
-        onVote={noop}
-        onCancel={noop}
+        onVote={handleVote}
+        onCancel={handleCancel}
         onClose={handleClose}
       />
     </>
@@ -61,6 +66,26 @@ const GameModalProvider: React.FC = () => {
         ? ChatRoom.General
         : convertToTeamChatRoom(player.team),
     );
+  }
+
+  function handleVote(playerNumber: PlayerNumber) {
+    stompClient.publishWithDefaults({
+      destination: `/app/game/${id}/vote`,
+      body: JSON.stringify({
+        type: 'VOTE',
+        content: playerNumber,
+      }),
+    });
+  }
+
+  function handleCancel(playerNumber: PlayerNumber) {
+    stompClient.publishWithDefaults({
+      destination: `/app/game/${id}/cancelVote`,
+      body: JSON.stringify({
+        type: 'CANCEL_VOTE',
+        content: playerNumber,
+      }),
+    });
   }
 };
 

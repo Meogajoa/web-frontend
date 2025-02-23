@@ -2,6 +2,7 @@ import useGameSystemNotice, {
   type DayOrNightNotice,
   type MiniGameWillEndNotice,
   type MiniGameWillStartNotice,
+  type VoteGameStatusNotice,
 } from '@/hooks/game/useGameSystemNotice';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
@@ -21,8 +22,15 @@ const useGameSystemNoticeHandler = ({
   onGameEnd?: () => void;
 }) => {
   const { id, broadcastMessage } = useRoom();
-  const { player, setModalVisible, setPlayingMiniGame, setTime, setNthDay } =
-    useGame();
+  const {
+    player,
+    miniGame,
+    setMiniGame,
+    setModalVisible,
+    setPlayingMiniGame,
+    setTime,
+    setNthDay,
+  } = useGame();
   const t = useTranslations('roomRoute.chatMessage');
 
   useGameSystemNotice({
@@ -32,6 +40,7 @@ const useGameSystemNoticeHandler = ({
     onGameEnd: handleGameEnd,
     onMiniGameWillStart: handleMiniGameWillStart,
     onMiniGameWillEnd: handleMiniGameWillEnd,
+    onVoteGameStatus: handleVoteGameStatus,
   });
 
   function handleGameDayOrNight(gameDayOrNightNotice: DayOrNightNotice) {
@@ -113,6 +122,15 @@ const useGameSystemNoticeHandler = ({
           break;
       }
     }, delay);
+  }
+
+  function handleVoteGameStatus(voteGameStatusNotice: VoteGameStatusNotice) {
+    setMiniGame({
+      vote: {
+        ...miniGame.vote,
+        result: { ...miniGame.vote.result, ...voteGameStatusNotice.result },
+      },
+    });
   }
 };
 
