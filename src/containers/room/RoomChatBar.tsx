@@ -66,7 +66,7 @@ const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
           <ChatBar.Textarea
             ref={textareaRef}
             onKeyDown={handleKeyDown}
-            onInput={handleTextareaChange}
+            onInput={handleInput}
           />
           <ChatBar.SendButton onSendClick={handleSend} />
         </ChatBar>
@@ -107,7 +107,13 @@ const RoomChatBar = React.memo<Props>(({ className, renderPlaceholder }) => {
     }
   }
 
-  function handleTextareaChange() {
+  function handleInput() {
+    if (textareaRef.current?.getValue().length === 0) {
+      setTyping(false);
+      debouncedSetTyping.cancel();
+      return;
+    }
+
     setTyping(true);
     debouncedSetTyping(false);
   }
