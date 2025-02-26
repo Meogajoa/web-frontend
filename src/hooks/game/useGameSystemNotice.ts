@@ -30,6 +30,7 @@ const BaseNoticeSchema = z.object({
  * GAME_DAY_OR_NIGHT
  */
 const dayOrNightNoticeSchema = BaseNoticeSchema.extend({
+  gameId: z.string(),
   sendTime: z.union([z.string(), z.date()]).transform((date) => new Date(date)),
   type: z.literal(NoticeType.GameDayOrNight),
   day: z.number(),

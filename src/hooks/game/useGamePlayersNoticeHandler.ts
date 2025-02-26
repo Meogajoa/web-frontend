@@ -9,6 +9,7 @@ import { ChatMessageType } from '@/types/chat';
 import { PlayerNumber, PlayerStatus } from '@/types/game';
 import { convertToTeamChatRoom } from '@/utils/chat';
 import { isValidPlayerNumber } from '@/utils/game';
+import { uniqueId } from 'lodash-es';
 import { useTranslations } from 'next-intl';
 
 const useGamePlayersNoticeHandler = ({ enabled }: { enabled: boolean }) => {
@@ -62,7 +63,7 @@ const useGamePlayersNoticeHandler = ({ enabled }: { enabled: boolean }) => {
           : gameUsersNotice.redTeam;
 
     addMessage(convertToTeamChatRoom(player.team), {
-      id: gameUsersNotice.id,
+      id: uniqueId(),
       sendTime: new Date(),
       type: ChatMessageType.System,
       sender: ChatMessageType.System,

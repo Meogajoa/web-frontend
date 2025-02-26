@@ -62,7 +62,7 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
         <RoomHeaderGame className="shrink-0" />
       )}
 
-      <div className="relative z-10">
+      <section className="relative z-10" aria-label="Info Section">
         <div
           className={cn(
             'absolute w-full px-4',
@@ -82,7 +82,7 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
               </Button>
             )}
         </div>
-      </div>
+      </section>
 
       <RoomMessages
         className="flex-1"
