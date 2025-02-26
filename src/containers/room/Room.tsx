@@ -63,33 +63,32 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       )}
 
       <div className="relative z-10">
-        {!playing ? (
-          <div
-            className="bg-gray-5/30 absolute w-full px-4"
-            ref={infoSectionRef as unknown as React.RefObject<HTMLDivElement>}
-          >
-            <RoomUserList />
-          </div>
-        ) : (
-          <>
-            {playingMiniGame === MiniGame.Vote &&
-              currentChatRoom === convertToTeamChatRoom(player.team) && (
-                <div
-                  className="absolute top-2 mx-4 w-full animate-[fade-in-down_0.5s_ease-in-out]"
-                  ref={
-                    infoSectionRef as unknown as React.RefObject<HTMLDivElement>
-                  }
-                >
-                  <Button onClick={handleVoteGameModalOpen}>
-                    {t('voteMiniGameButton')}
-                  </Button>
-                </div>
-              )}
-          </>
-        )}
+        <div
+          className={cn(
+            'absolute w-full px-4',
+            !playing && 'bg-gray-5/30',
+            playingMiniGame === MiniGame.Vote &&
+              currentChatRoom === convertToTeamChatRoom(player.team) &&
+              'top-2 animate-[fade-in-down_0.5s_ease-in-out]',
+          )}
+          ref={infoSectionRef as unknown as React.RefObject<HTMLDivElement>}
+        >
+          {!playing && <RoomUserList />}
+
+          {playingMiniGame === MiniGame.Vote &&
+            currentChatRoom === convertToTeamChatRoom(player.team) && (
+              <Button className="w-full" onClick={handleVoteGameModalOpen}>
+                {t('voteMiniGameButton')}
+              </Button>
+            )}
+        </div>
       </div>
 
-      <RoomMessages className="flex-1" topPaddingHeight={infoSectionHeight} />
+      <RoomMessages
+        className="flex-1"
+        key={infoSectionHeight}
+        topPaddingHeight={infoSectionHeight}
+      />
       <RoomChatBar
         className="bottom-0-dynamic fixed w-full"
         renderPlaceholder
