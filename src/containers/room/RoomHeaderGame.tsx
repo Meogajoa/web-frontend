@@ -94,8 +94,6 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     setLeftTimeInSeconds(Math.max(0, time));
   }, A_SECOND);
 
-  console.log(leftTimeInSeconds);
-
   return (
     <div
       className={cn(
