@@ -115,8 +115,12 @@ const useGameSystemNoticeHandler = ({
     const currentTime = dayjs.utc();
     const delay = Math.max(0, scheduledTime.diff(currentTime));
 
-    if (miniGameWillEndNotice.miniGameType === MiniGame.Vote) {
+    if (
+      miniGameWillEndNotice.miniGameType === MiniGame.Vote ||
+      miniGameWillEndNotice.miniGameType === MiniGame.ReVote
+    ) {
       setScheduleTime(scheduledTime.toDate());
+      setModalVisible(null);
     }
 
     console.debug(
@@ -134,6 +138,7 @@ const useGameSystemNoticeHandler = ({
           break;
         case MiniGame.Vote:
           setPlayingMiniGame(null);
+          setModalVisible(null);
           break;
         default:
           break;
