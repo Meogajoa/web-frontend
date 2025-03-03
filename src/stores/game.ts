@@ -15,7 +15,7 @@ export type GameState = {
   player: Player;
   otherPlayers: Record<PlayerNumber, Player>;
   time: GameTime;
-  scheduleTime: Nullable<Date>;
+  scheduledTime: Nullable<Date>;
   nthDay: number;
   whitePlayerNumbers: PlayerNumber[];
   blackPlayerNumbers: PlayerNumber[];
@@ -35,7 +35,7 @@ export type GameActions = {
   setPlayer: (player: Player) => void;
   setPlayerByPlayerNumber: (playerNumber: PlayerNumber, player: Player) => void;
   setTime: (time: GameTime) => void;
-  setScheduleTime: (scheduleTime: Nullable<Date>) => void;
+  setScheduledTime: (scheduleTime: Nullable<Date>) => void;
   setNthDay: (nthDay: number) => void;
   getTeamPlayers: (team: Optional<Team>) => Player[];
   setWhitePlayerNumbers: (whitePlayerNumbers: PlayerNumber[]) => void;
@@ -72,7 +72,7 @@ export const defaultInitState: GameState = {
       {} as Record<PlayerNumber, Player>,
     ),
   time: GameTime.Invalid,
-  scheduleTime: null,
+  scheduledTime: null,
   nthDay: 0,
   whitePlayerNumbers: [],
   blackPlayerNumbers: [],
@@ -114,8 +114,8 @@ export const createGameStore = (initState: GameState = defaultInitState) => {
     setTime(time) {
       set({ time });
     },
-    setScheduleTime(scheduleTime) {
-      set({ scheduleTime });
+    setScheduledTime(scheduledTime) {
+      set({ scheduledTime });
     },
     setNthDay(nthDay) {
       set({ nthDay });

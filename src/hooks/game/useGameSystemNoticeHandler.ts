@@ -32,7 +32,7 @@ const useGameSystemNoticeHandler = ({
     setPlayingMiniGame,
     setTime,
     setNthDay,
-    setScheduleTime,
+    setScheduledTime,
   } = useGame();
   const t = useTranslations('roomRoute.chatMessage');
 
@@ -119,7 +119,7 @@ const useGameSystemNoticeHandler = ({
       miniGameWillEndNotice.miniGameType === MiniGame.Vote ||
       miniGameWillEndNotice.miniGameType === MiniGame.ReVote
     ) {
-      setScheduleTime(scheduledTime.toDate());
+      setScheduledTime(scheduledTime.toDate());
       setModalVisible(null);
     }
 

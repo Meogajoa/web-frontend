@@ -83,12 +83,12 @@ type TimerProps = {
 };
 
 const Timer: React.FC<TimerProps> = ({ className }) => {
-  const { player, scheduleTime } = useGame();
+  const { player, scheduledTime } = useGame();
   const [leftTimeInSeconds, setLeftTimeInSeconds] = React.useState(0);
 
   useHarmonicIntervalFn(() => {
-    const time = scheduleTime
-      ? dayjs.utc(scheduleTime).diff(dayjs.utc(), 'seconds')
+    const time = scheduledTime
+      ? dayjs.utc(scheduledTime).diff(dayjs.utc(), 'seconds')
       : 0;
 
     setLeftTimeInSeconds(Math.max(0, time));
