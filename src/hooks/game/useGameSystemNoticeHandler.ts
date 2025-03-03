@@ -32,6 +32,7 @@ const useGameSystemNoticeHandler = ({
     setPlayingMiniGame,
     setTime,
     setNthDay,
+    setScheduleTime,
   } = useGame();
   const t = useTranslations('roomRoute.chatMessage');
 
@@ -113,6 +114,10 @@ const useGameSystemNoticeHandler = ({
     const scheduledTime = dayjs.utc(miniGameWillEndNotice.scheduledTime);
     const currentTime = dayjs.utc();
     const delay = Math.max(0, scheduledTime.diff(currentTime));
+
+    if (miniGameWillEndNotice.miniGameType === MiniGame.Vote) {
+      setScheduleTime(scheduledTime.toDate());
+    }
 
     console.debug(
       `${miniGameWillEndNotice.miniGameType} schedule time delay - mini game will end in`,

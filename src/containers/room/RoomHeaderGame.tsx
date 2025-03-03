@@ -1,3 +1,4 @@
+import { A_SECOND } from '@/constants/misc';
 import ChatRoomListSidebar from '@/containers/room/ChatRoomListSidebar';
 import { useGame } from '@/providers/GameProvider';
 import { useRoom } from '@/providers/RoomProvider';
@@ -5,9 +6,11 @@ import CartFillIcon from '@/svgs/CartFillIcon';
 import ChatIcon from '@/svgs/ChatIcon';
 import { GameTime, Team } from '@/types/game';
 import { cn } from '@/utils/classname';
+import { dayjs } from '@/utils/date';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { useHarmonicIntervalFn } from 'react-use';
 
 type Props = {
   className?: string;
@@ -80,7 +83,18 @@ type TimerProps = {
 };
 
 const Timer: React.FC<TimerProps> = ({ className }) => {
-  const { player } = useGame();
+  const { player, scheduleTime } = useGame();
+  const [leftTimeInSeconds, setLeftTimeInSeconds] = React.useState(0);
+
+  useHarmonicIntervalFn(() => {
+    const time = scheduleTime
+      ? dayjs.utc(scheduleTime).diff(dayjs.utc(), 'seconds')
+      : 0;
+
+    setLeftTimeInSeconds(Math.max(0, time));
+  }, A_SECOND);
+
+  console.log(leftTimeInSeconds);
 
   return (
     <div
@@ -101,7 +115,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
       </button>
 
       <span className="bg-gray-1 flex h-5.5 w-16 items-center justify-center rounded-full text-sm text-white">
-        00:20
+        {dayjs.duration(leftTimeInSeconds, 'seconds').format('mm:ss')}
       </span>
 
       <button
