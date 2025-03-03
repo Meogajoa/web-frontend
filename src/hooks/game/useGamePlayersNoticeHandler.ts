@@ -63,6 +63,7 @@ const useGamePlayersNoticeHandler = ({ enabled }: { enabled: boolean }) => {
           : gameUsersNotice.redTeam;
 
     addMessage(convertToTeamChatRoom(player.team), {
+      // id: gameUsersNotice.id,
       id: uniqueId(),
       sendTime: new Date(),
       type: ChatMessageType.System,

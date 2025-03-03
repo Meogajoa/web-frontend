@@ -1,5 +1,5 @@
-import { usernameSchema } from '@/types/account';
-import { teamColorSchema } from '@/types/game';
+import { teamSchema } from '@/types/game';
+import { usernameSchema } from '@/types/user';
 import { compact } from 'lodash-es';
 import { useSubscription } from 'react-stomp-hooks';
 import { z } from 'zod';
@@ -7,7 +7,7 @@ import { z } from 'zod';
 const userGameInfoSchema = z.object({
   number: z.number(),
   nickname: usernameSchema,
-  teamColor: teamColorSchema,
+  teamColor: teamSchema,
   money: z.number(),
   spy: z.boolean(),
   eliminated: z.boolean(),
