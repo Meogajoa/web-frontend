@@ -152,7 +152,7 @@ const useGameSystemNoticeHandler = ({
     setMiniGame({
       vote: {
         ...miniGame.vote,
-        result: { ...miniGame.vote.result, ...voteGameStatusNotice.result },
+        result: { ...voteGameStatusNotice.result },
       },
     });
   }

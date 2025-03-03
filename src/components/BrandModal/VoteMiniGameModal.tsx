@@ -10,7 +10,7 @@ type Props = Pick<BrandModalProps, 'onClose' | 'visible'> & {
   className?: string;
   availableVoteCount: number;
   players: Record<PlayerNumber, Player>;
-  voteResult: Record<PlayerNumber, number>;
+  voteResult: Partial<Record<PlayerNumber, number>>;
   onVote: (playerNumber: PlayerNumber) => void;
   onCancel: (playerNumber: PlayerNumber) => void;
 };
@@ -46,20 +46,27 @@ const VoteMiniGameModal: React.FC<Props> = ({
         </h3>
 
         <div className="mt-4.5 grid grid-cols-3 grid-rows-3">
-          {Object.values(players).map((player, index) => (
-            <PlayerVote
-              className={cn(
-                'hover:bg-gray-5 rounded-lg px-3 py-2 transition-colors duration-500',
-                player.number === selectedPlayerNumber && 'bg-gray-5/35',
-              )}
-              key={index}
-              playerNumber={player.number}
-              username={t('playerUsername', { playerNumber: player.number })}
-              voteCount={voteResult[player.number]}
-              color={player.team}
-              onClick={handlePlayerClick(player.number)}
-            />
-          ))}
+          {Object.values(players).map((player, index) => {
+            const voteCount = voteResult[player.number];
+            if (typeof voteCount !== 'number') {
+              return;
+            }
+
+            return (
+              <PlayerVote
+                className={cn(
+                  'hover:bg-gray-5 rounded-lg px-3 py-2 transition-colors duration-500',
+                  player.number === selectedPlayerNumber && 'bg-gray-5/35',
+                )}
+                key={index}
+                playerNumber={player.number}
+                username={t('playerUsername', { playerNumber: player.number })}
+                voteCount={voteCount}
+                color={player.team}
+                onClick={handlePlayerClick(player.number)}
+              />
+            );
+          })}
         </div>
       </BrandModal.Body>
 

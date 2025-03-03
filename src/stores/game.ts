@@ -26,7 +26,7 @@ export type GameState = {
   miniGame: {
     vote: {
       availableVoteCount: number;
-      result: Record<PlayerNumber, number>;
+      result: Partial<Record<PlayerNumber, number>>;
     };
   };
 };
