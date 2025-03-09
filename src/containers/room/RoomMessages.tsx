@@ -17,9 +17,10 @@ import { useIntersection } from 'react-use';
 
 type Props = {
   className?: string;
+  topPaddingHeight?: number;
 };
 
-const RoomMessages = React.memo<Props>(({ className }) => {
+const RoomMessages = React.memo<Props>(({ className, topPaddingHeight }) => {
   const t = useTranslations('roomRoute.chatMessage');
   const { currentChatRoom, typing } = useRoom();
   const { user } = useUser();
@@ -58,6 +59,8 @@ const RoomMessages = React.memo<Props>(({ className }) => {
       className={cn('overflow-y-auto px-4 py-5 font-bold', className)}
       ref={containerRef}
     >
+      <div style={{ height: `${topPaddingHeight}px` }} aria-hidden />
+
       {messages.map(({ id, content, sender, type }, index) => {
         const isSelf =
           sender === user.name || sender === player.number.toString();

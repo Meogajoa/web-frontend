@@ -14,6 +14,7 @@ import { convertToTeamChatRoom } from '@/utils/chat';
 import { cn } from '@/utils/classname';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { useMeasure } from 'react-use';
 
 type Props = {
   className?: string;
@@ -25,6 +26,7 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
   const { id, playing, currentChatRoom } = useRoom();
   const { player, playingMiniGame, setModalVisible } = useGame();
   const [canStartGame, setCanStartGame] = React.useState(playing);
+  const [infoSectionRef, { height: infoSectionHeight }] = useMeasure();
 
   useBodyBgColor(
     player.team === Team.Black
@@ -55,32 +57,38 @@ const Room: React.FC<Props> = ({ className, rejoin }) => {
       data-testid="room"
     >
       {!playing ? (
-        <>
-          <RoomHeaderLobby className="shrink-0" />
-          <div className="relative z-10">
-            <div className="bg-gray-5/30 absolute w-full px-4">
-              <RoomUserList />
-            </div>
-          </div>
-        </>
+        <RoomHeaderLobby className="shrink-0" />
       ) : (
-        <>
-          <RoomHeaderGame className="shrink-0" />
-          {playingMiniGame === MiniGame.Vote &&
-            currentChatRoom === convertToTeamChatRoom(player.team) && (
-              <div className="relative mx-4">
-                <Button
-                  className="absolute top-2 w-full animate-[fade-in-down_0.5s_ease-in-out]"
-                  onClick={handleVoteGameModalOpen}
-                >
-                  {t('voteMiniGameButton')}
-                </Button>
-              </div>
-            )}
-        </>
+        <RoomHeaderGame className="shrink-0" />
       )}
 
-      <RoomMessages className="flex-1" />
+      <section className="relative z-10" aria-label="Info Section">
+        <div
+          className={cn(
+            'absolute w-full px-4',
+            !playing && 'bg-gray-5/30',
+            playingMiniGame === MiniGame.Vote &&
+              currentChatRoom === convertToTeamChatRoom(player.team) &&
+              'top-2 animate-[fade-in-down_0.5s_ease-in-out]',
+          )}
+          ref={infoSectionRef as unknown as React.RefObject<HTMLDivElement>}
+        >
+          {!playing && <RoomUserList />}
+
+          {playingMiniGame === MiniGame.Vote &&
+            currentChatRoom === convertToTeamChatRoom(player.team) && (
+              <Button className="w-full" onClick={handleVoteGameModalOpen}>
+                {t('voteMiniGameButton')}
+              </Button>
+            )}
+        </div>
+      </section>
+
+      <RoomMessages
+        className="flex-1"
+        key={infoSectionHeight}
+        topPaddingHeight={infoSectionHeight}
+      />
       <RoomChatBar
         className="bottom-0-dynamic fixed w-full"
         renderPlaceholder
