@@ -1,6 +1,6 @@
+import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
-import '~/styles/globals.css';
 
 const brand = localFont({
   src: '../assets/fonts/PretendardVariable.woff2',

@@ -1,60 +1,65 @@
-import { Button as HeadlessuiButton } from '@headlessui/react';
-import { cva, VariantProps } from 'class-variance-authority';
+import { PlayerNumber, Team } from '@/types/game';
+import { cn } from '@/utils/classname';
+import { cva, type VariantProps } from 'class-variance-authority';
+import Image from 'next/image';
 import React from 'react';
-import { cn } from '~/utils/classname';
 
-const variants = cva('relative rounded-[0.625rem]', {
+const variants = cva('relative overflow-clip rounded-[0.625rem]', {
   variants: {
     size: {
       sm: 'size-5.5 rounded-[0.3rem]',
       md: 'size-9',
-      lg: 'size-[2.875rem]',
-      xl: 'size-[3.625rem]',
+      lg: 'size-12',
+      xl: 'size-15',
     },
     color: {
-      gray: 'bg-gray-2',
-      'light-gray': 'bg-gray-5',
+      [Team.Black]: 'bg-gray-2',
+      [Team.White]: 'bg-gray-5',
+      [Team.Red]: 'bg-red',
+      [Team.Invalid]: 'bg-gray-2',
     },
   },
   defaultVariants: {
     size: 'md',
-    color: 'gray',
+    color: Team.Black,
   },
 });
 
 export type ProfileImageProps = VariantProps<typeof variants> & {
   className?: string;
-  as?: React.ElementType;
+  playerNumber?: PlayerNumber;
   src?: string;
-  userNumber?: number;
-  onProfileClick?: () => void;
+  as?: React.ElementType;
+  onClick?: () => void;
 };
 
 const ProfileImage: React.FC<React.PropsWithChildren<ProfileImageProps>> = ({
   className,
   size,
   color,
-  as = 'button',
+  playerNumber = PlayerNumber.Invalid,
   src,
-  userNumber = 0,
-  onProfileClick: handleProfileClick,
+  as: Component = 'button',
+  onClick: handleClick,
   children,
-  ...props
 }) => {
-  const Component = as === 'button' ? HeadlessuiButton : as;
-
   return (
     <Component
-      className={cn(variants({ size, color }), 'bg-cover bg-center', className)}
-      style={{
-        backgroundImage: `url(${src})`,
-      }}
-      onClick={handleProfileClick}
-      {...props}
+      className={cn(variants({ size, color }), className)}
+      onClick={handleClick}
     >
-      {userNumber > 0 && (
+      {src && (
+        <Image
+          className="object-cover object-center"
+          src={src}
+          alt="profile"
+          fill
+        />
+      )}
+
+      {playerNumber !== PlayerNumber.Invalid && (
         <mark className="bg-gray-4 absolute top-0.5 right-0.5 flex size-6 items-center justify-center rounded-lg text-[0.625rem] font-bold text-black">
-          {userNumber}
+          {playerNumber}
         </mark>
       )}
 

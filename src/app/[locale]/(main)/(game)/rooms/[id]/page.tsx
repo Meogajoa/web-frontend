@@ -1,12 +1,14 @@
 'use client';
 
+import LoadingIndicator from '@/components/LoadingIndicator';
+import Room from '@/containers/room/Room';
+import useJoinRoom from '@/hooks/room/useJoinRoom';
+import GameModalProvider from '@/providers/GameModalProvider';
+import { GameProvider } from '@/providers/GameProvider';
+import { RoomProvider } from '@/providers/RoomProvider';
+import { ChatMessageType, ChatRoom } from '@/types/chat';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import LoadingIndicator from '~/components/LoadingIndicator';
-import Room from '~/components/Room';
-import { useJoinRoom } from '~/hooks/room';
-import { GameProvider } from '~/providers/GameProvider';
-import { RoomProvider } from '~/providers/RoomProvider';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -15,7 +17,7 @@ type Props = {
 const RoomPage: React.FC<Props> = ({ params }) => {
   const t = useTranslations('roomRoute');
   const { id } = React.use(params);
-  const { isSuccess, isPending, data } = useJoinRoom({
+  const { isSuccess, isPending, data, joinRoom } = useJoinRoom({
     variables: { id },
   });
 
@@ -29,21 +31,25 @@ const RoomPage: React.FC<Props> = ({ params }) => {
           id={id}
           title={data.name}
           hostNickname={data.owner}
-          chatLogs={data.chatLogs}
+          playing={data.playing}
+          lobbyChatLogs={data.chatLogs.map((chatLog) => ({
+            ...chatLog,
+            type: ChatMessageType.Chat,
+          }))}
+          currentChatRoom={ChatRoom.Lobby}
         >
           <GameProvider>
-            <Room />
+            <Room rejoin={handleRejoin} />
+            <GameModalProvider />
           </GameProvider>
         </RoomProvider>
       )}
-
-      <style>{`
-        body {
-          background-color: var(--color-gray-6);
-        }
-      `}</style>
     </>
   );
+
+  function handleRejoin() {
+    joinRoom({ id });
+  }
 };
 
 export default RoomPage;

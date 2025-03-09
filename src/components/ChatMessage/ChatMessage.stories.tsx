@@ -1,6 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
-import ExampleImage from '~/assets/images/cat.png';
-import { ChatMessage } from '~/components/ChatMessage';
+import ExampleImage from '@/assets/images/cat.png';
+import { ChatMessage } from '@/components/ChatMessage';
+import { Team } from '@/types/game';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ChatMessage> = {
   title: 'Molecules/ChatMessage',
@@ -55,7 +56,7 @@ export const Other: Story = {
   args: {
     position: 'left',
     username: 'John Doe',
-    color: 'light-gray',
+    color: Team.White,
     message: 'Hello, world!',
   },
 };
@@ -73,7 +74,7 @@ export const Self: Story = {
   args: {
     position: 'right',
     username: 'Jane Doe',
-    color: 'light-gray',
+    color: Team.White,
     message: 'Hello, world!',
   },
 };
@@ -82,7 +83,7 @@ export const LongMessage: Story = {
   args: {
     position: 'left',
     username: 'John Doe',
-    color: 'light-gray',
+    color: Team.White,
     message:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec elit ultricies ultricies. Nullam nec purus nec elit ultricies ultricies.',
   },

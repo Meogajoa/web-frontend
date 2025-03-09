@@ -1,16 +1,16 @@
 'use client';
 
+import { cn } from '@/utils/classname';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import React from 'react';
-import { cn } from '~/utils/classname';
 
 export type ModalProps = React.ComponentProps<'form'> & {
   overlayClassName?: string;
   visible: boolean;
+  onClose: () => void;
   hasBackdropBlur?: boolean;
   verticalAlignment?: 'top' | 'center' | 'bottom';
   horizontalAlignment?: 'left' | 'center' | 'right';
-  onClose: () => void;
   onSubmit?: () => void;
 };
 
@@ -27,7 +27,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
 }) => {
   return (
     <Dialog
-      className="fixed inset-0 z-50 flex size-full items-center justify-center"
+      className="fixed inset-0 z-50 flex size-full items-center justify-center overflow-y-auto"
       transition
       open={visible}
       onClose={onClose}
@@ -45,9 +45,8 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
       )}
 
       <DialogPanel
-        as="form"
         className={cn(
-          'relative flex size-full overflow-y-auto duration-300 ease-in-out data-[closed]:opacity-0',
+          'relative size-full duration-300 ease-in-out data-[closed]:opacity-0',
           verticalAlignment === 'top' && 'items-start',
           verticalAlignment === 'center' && 'items-center',
           verticalAlignment === 'bottom' && 'items-end',
@@ -56,6 +55,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
           horizontalAlignment === 'right' && 'ml-auto',
           className,
         )}
+        as="form"
         transition
         onSubmit={onSubmit}
       >

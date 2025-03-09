@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { PlacesType, Tooltip as ReactTooltip } from 'react-tooltip';
+import { type PlacesType, Tooltip as ReactTooltip } from 'react-tooltip';
 
 type Props = {
   className?: string;

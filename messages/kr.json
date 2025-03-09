@@ -21,22 +21,42 @@
     "enteringRoom": "방 입장 중",
     "header": {
       "nth": "번째",
-      "morning": "낮",
+      "day": "낮",
       "night": "밤"
     },
     "chatRoomType": {
-      "all": "전체 채팅방",
-      "white": "백팀 채팅방",
+      "lobby": "",
+      "personal": "",
+      "general": "전체 채팅방",
       "black": "흑팀 채팅방",
-      "user01": "{username} 01",
-      "user02": "{username} 02",
-      "user03": "{username} 03",
-      "user04": "{username} 04",
-      "user05": "{username} 05",
-      "user06": "{username} 06",
-      "user07": "{username} 07",
-      "user08": "{username} 08"
-    }
+      "white": "백팀 채팅방",
+      "red": "빨팀 채팅방",
+      "eliminated": "탈락자 채팅방",
+      "invalid": "",
+      "1": "1번 유저 채팅방",
+      "2": "2번 유저 채팅방",
+      "3": "3번 유저 채팅방",
+      "4": "4번 유저 채팅방",
+      "5": "5번 유저 채팅방",
+      "6": "6번 유저 채팅방",
+      "7": "7번 유저 채팅방",
+      "8": "8번 유저 채팅방",
+      "9": "9번 유저 채팅방"
+    },
+    "chatRoom": {
+      "emptyContent": "대화를 시작해 보세요.",
+      "noAccessToOpponentChatRoom": "(상대팀 채팅방은 볼 수 없습니다.)",
+      "noAccessToEliminatedChatRoom": "(탈락자 채팅방은 볼 수 없습니다.)",
+      "noAccessWhenNight": "(밤에는 대화할 수 없습니다.)"
+    },
+    "chatMessage": {
+      "inGameUsername": "{playerNumber}번 유저",
+      "teamColorSystemMessage": "당신은 {teamColor, select, BLACK {흑팀} WHITE {백팀} other {빨팀}}입니다.",
+      "teamChatStartSystemMessage": "팀원 {userNames}님과\n팀 채팅을 시작합니다.",
+      "daySystemMessage": "낮이 되었습니다.\n전체 채팅방으로 이동해 미니게임을 진행해 주시기 바랍니다.",
+      "nightSystemMessage": "밤이 되었습니다.\n각자 팀 채팅방으로 이동하여 투표를 진행해주시기 바랍니다."
+    },
+    "voteMiniGameButton": "투표하러 가기"
   },
   "bottomNavigation": {
     "store": "상점",
@@ -55,5 +75,20 @@
     "roomPasswordLabel": "잠금 처리된 방입니다.\n비밀번호를 입력하세요.",
     "cancelButton": "취소",
     "completeButton": "입력 완료"
+  },
+  "dayOrNightNoticeModal": {
+    "title": "공지",
+    "dayDescription": "낮이 되었습니다.\n전체 채팅방으로 이동해주세요.",
+    "nightDescription": "밤이 되었습니다.\n팀 채팅방으로 이동해주세요.",
+    "dayInfo": "다음 낮에 전체 채팅방이 리셋됩니다.",
+    "nightInfo": "다음 밤에 팀 채팅방이 리셋됩니다.",
+    "moveButton": "이동"
+  },
+  "voteMiniGameModal": {
+    "title": "투표",
+    "availableVoteCount": "사용 가능 투표권: {voteCount}개",
+    "voteButton": "투표",
+    "cancelButton": "취소",
+    "playerUsername": "{playerNumber}번 유저"
   }
 }

@@ -1,25 +1,12 @@
 import { z } from 'zod';
-import { username } from '~/types/account';
-
-export type GameStartRequest = {
-  id: string;
-};
 
 export enum Team {
   Invalid = 'INVALID',
   Black = 'BLACK',
   White = 'WHITE',
+  Red = 'RED',
 }
-export const teamColor = z.nativeEnum(Team);
-
-export type Player = {
-  team: Team;
-  number: number;
-  alive: boolean;
-  money?: number;
-  isSpy?: boolean;
-  profimeImageSrc?: string;
-};
+export const teamSchema = z.nativeEnum(Team);
 
 export enum PlayerNumber {
   Invalid,
@@ -31,21 +18,47 @@ export enum PlayerNumber {
   Six,
   Seven,
   Eight,
+  Nine,
+}
+export const playerNumberSchema = z.nativeEnum(PlayerNumber);
+
+export enum PlayerStatus {
+  Invalid = 'INVALID',
+  Alive = 'ALIVE',
+  Eliminated = 'ELIMINATED',
 }
 
-export type PlayerNumberKey = keyof typeof PlayerNumber;
+export type User = {
+  team: Team;
+  number: PlayerNumber;
+  eliminated: boolean;
+  money?: number;
+  isSpy?: boolean;
+  profimeImageSrc?: string;
+};
+
+export type Player = {
+  team: Team;
+  number: PlayerNumber;
+  status: PlayerStatus;
+  money?: number;
+  isSpy?: boolean;
+  profimeImageSrc?: string;
+};
 
 export enum GameTime {
   Invalid = 'INVALID',
   Night = 'NIGHT',
-  Morning = 'MORNING',
+  Day = 'DAY',
 }
 
-export const userGameInfo = z.object({
-  number: z.number(),
-  nickname: username,
-  teamColor: teamColor,
-  money: z.number(),
-  isSpy: z.boolean(),
-});
-export type UserGameInfo = z.infer<typeof userGameInfo>;
+export enum MiniGame {
+  Invalid = 'INVALID',
+  ButtonClick = 'BUTTON_CLICK',
+  Vote = 'VOTE_GAME',
+}
+
+export enum GameModal {
+  DayOrNightNotice,
+  VoteMiniGame,
+}

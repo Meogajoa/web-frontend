@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { BrandModal } from '@/components/BrandModal';
+import PasswordInputModal from '@/components/BrandModal/PasswordInputModal';
+import { Button } from '@/components/Button';
+import type { Meta, StoryObj } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
 import React from 'react';
-import { BrandModal } from '~/components/BrandModal';
-import PasswordInputModal from '~/components/BrandModal/PasswordInputModal';
-import { Button } from '~/components/Button';
 
 const meta: Meta<typeof BrandModal> = {
   title: 'Organisms/BrandModal',

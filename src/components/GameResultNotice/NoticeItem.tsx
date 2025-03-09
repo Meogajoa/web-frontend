@@ -1,6 +1,6 @@
+import BaseNoticeItem from '@/components/GameResultNotice/BaseNoticeItem';
+import { cn } from '@/utils/classname';
 import React from 'react';
-import { cn } from '~/utils/classname';
-import BaseNoticeItem from './BaseNoticeItem';
 
 export type NoticeItemProps = {
   rank: number;

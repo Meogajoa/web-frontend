@@ -1,8 +1,8 @@
+import BaseNoticeItem from '@/components/GameResultNotice/BaseNoticeItem';
+import NumberIconBall from '@/components/GameResultNotice/NumberIconBall';
+import { type Team } from '@/types/game';
+import { cn } from '@/utils/classname';
 import React from 'react';
-import { Team } from '~/types/game';
-import { cn } from '~/utils/classname';
-import NumberIconBall from '../NumberIconBall';
-import BaseNoticeItem from './BaseNoticeItem';
 
 export type TeamNoticeItemProps = {
   rank: number;

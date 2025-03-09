@@ -1,7 +1,7 @@
+import { BrandModal, type BrandModalProps } from '@/components/BrandModal';
+import { Input } from '@/components/Input';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { BrandModal, BrandModalProps } from '~/components/BrandModal';
-import { Input } from '~/components/Input';
 
 type Props = BrandModalProps;
 
@@ -24,7 +24,7 @@ const PasswordInputModal: React.FC<Props> = ({ onClose, visible }) => {
       hasBackdropBlur
       visible={visible}
       onSubmit={handleSubmit(onSubmit)}
-      className="w-[18.188rem]"
+      className="w-73"
     >
       <BrandModal.Header className="mb-3">
         <BrandModal.Title label="비밀번호 입력" />

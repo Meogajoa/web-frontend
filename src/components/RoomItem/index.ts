@@ -1,3 +1,3 @@
-import RoomItem from '~/components/RoomItem/RoomItem';
+import RoomItem from '@/components/RoomItem/RoomItem';
 
 export { RoomItem };

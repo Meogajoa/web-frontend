@@ -1,16 +1,18 @@
 'use client';
 
+import useSignIn, {
+  type SignInForm,
+  type SignInResponse,
+} from '@/hooks/account/useSignIn';
+import { useRouter } from '@/i18n/routing';
+import { useUser } from '@/providers/UserProvider';
 import { type AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { useSignIn } from '~/hooks/account';
-import { useRouter } from '~/i18n/routing';
-import { useAccount } from '~/providers/AccountProvider';
-import type { SignInForm, SignInResponse } from '~/types/account';
 
 const SignInPage = () => {
   const { register, handleSubmit } = useForm<SignInForm>();
   const router = useRouter();
-  const { setAccount } = useAccount();
+  const { setUser } = useUser();
 
   const { signIn } = useSignIn({
     onSuccess: handleSignInSuccess,
@@ -23,7 +25,9 @@ const SignInPage = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email" data-testid="email-label">
+          Email
+        </label>
         <input
           className="border"
           id="email"
@@ -34,7 +38,9 @@ const SignInPage = () => {
       </div>
 
       <div>
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password" data-testid="password-label">
+          Password
+        </label>
         <input
           className="border"
           id="password"
@@ -43,7 +49,7 @@ const SignInPage = () => {
         />
       </div>
 
-      <button className="border p-3" type="submit">
+      <button className="border p-3" type="submit" data-testid="sign-in-button">
         Sign In
       </button>
 
@@ -53,6 +59,7 @@ const SignInPage = () => {
           e.preventDefault();
           router.push('/account/sign-up');
         }}
+        data-testid="go-to-sign-up-button"
       >
         Go to Sign Up page
       </button>
@@ -65,7 +72,7 @@ const SignInPage = () => {
 
   function handleSignInSuccess(data: SignInResponse) {
     localStorage.setItem('sessionId', data.sessionId);
-    setAccount({ nickname: data.user.nickname });
+    setUser({ name: data.user.nickname });
     router.push('/home');
   }
 

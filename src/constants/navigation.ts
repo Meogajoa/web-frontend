@@ -1,6 +1,6 @@
-import CartFillIcon from '~/svgs/CartFillIcon';
-import HomeFillIcon from '~/svgs/HomeFillIcon';
-import PersonFillIcon from '~/svgs/PersonFillIcon';
+import CartFillIcon from '@/svgs/CartFillIcon';
+import HomeFillIcon from '@/svgs/HomeFillIcon';
+import PersonFillIcon from '@/svgs/PersonFillIcon';
 
 const MENUS = [
   {

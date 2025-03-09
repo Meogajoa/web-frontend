@@ -1,9 +1,9 @@
+import { assert } from '@/utils/assert';
 import fs from 'fs';
-import { assert } from '~/utils/assert';
 
 const createComponentTemplate = (name: string) => `
 import React from 'react';
-import { cn } from '~/utils/classname';
+import { cn } from '@/utils/classname';
 
 type Props = {
   className: string;
@@ -18,7 +18,7 @@ export default ${name};
 
 const createStoryTemplate = (name: string) => `
 import { Meta, StoryObj } from '@storybook/react';
-import ${name} from '~/components/${name}';
+import ${name} from '@/components/${name}';
 
 const meta: Meta<typeof ${name}> = {
   title: 'Example/${name}',

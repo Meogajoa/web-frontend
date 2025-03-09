@@ -1,10 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
-import stamp from 'public/images/game/icons/stamp.png';
-import { Team } from '~/types/game';
-import GameResultNotice from './GameResultNotice';
-import { NoticeItemProps } from './NoticeItem';
-import { TeamNoticeItemProps } from './TeamNoticeItem';
-import { VoteNoticeItemProps } from './VoteNoticeItem';
+import {
+  GameResultNotice,
+  type NoticeItemProps,
+  type TeamNoticeItemProps,
+  type VoteNoticeItemProps,
+} from '@/components/GameResultNotice';
+import { Team } from '@/types/game';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof GameResultNotice> = {
   title: 'Molecules/GameResultNotice',
@@ -48,14 +49,14 @@ export const Default: Story = {
     const voteNoticeItemData: VoteNoticeItemProps[] = [
       {
         nickname: '닉네임 01',
-        voteIcon: stamp.src,
-        profileColor: 'light-gray',
+        voteIcon: '/images/icons/stamp.png',
+        color: Team.White,
         votes: 2,
       },
       {
         nickname: '닉네임 02',
-        voteIcon: stamp.src,
-        profileColor: 'gray',
+        voteIcon: '/images/icons/stamp.png',
+        color: Team.White,
         votes: 4,
       },
     ];

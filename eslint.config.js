@@ -30,6 +30,14 @@ const eslintConfig = [
       'react/prop-types': 'off',
       'react/no-unknown-property': 'off',
       '@next/next/no-img-element': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'inline-type-imports',
+          disallowTypeAnnotations: true,
+        },
+      ],
     },
     ignores: ['!.storybook', '**/.yarn', '**/dist', '**/.next'],
   },

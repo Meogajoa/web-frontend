@@ -1,10 +1,12 @@
+import { BrandModal, type BrandModalProps } from '@/components/BrandModal';
+import useCreateRoom, {
+  type CreateRoomForm,
+  type CreateRoomResponse,
+} from '@/hooks/room/useCreateRoom';
+import { useRouter } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { BrandModal, BrandModalProps } from '~/components/BrandModal';
-import { useCreateRoom } from '~/hooks/room';
-import { useRouter } from '~/i18n/routing';
-import type { CreateRoomForm, CreateRoomResponse } from '~/types/room';
 
 type Props = BrandModalProps;
 
@@ -30,21 +32,37 @@ const CreateRoomModal: React.FC<Props> = ({ onClose, visible }) => {
 
       <BrandModal.Body>
         <div>
-          <label htmlFor="name">{t('roomNameLabel')}</label>
-          <input type="text" {...register('name', { required: true })} />
+          <label htmlFor="name" data-testid="room-name-label">
+            {t('roomNameLabel')}
+          </label>
+          <input
+            id="name"
+            type="text"
+            {...register('name', { required: true })}
+          />
         </div>
         <div>
-          <label htmlFor="password">{t('roomPasswordLabel')}</label>
-          <input type="password" {...register('password')} />
+          <label htmlFor="password" data-testid="room-password-label">
+            {t('roomPasswordLabel')}
+          </label>
+          <input id="password" type="password" {...register('password')} />
         </div>
       </BrandModal.Body>
 
       <BrandModal.ButtonGroup>
-        <BrandModal.Button kind="no" onClick={handleClose}>
+        <BrandModal.Button
+          kind="no"
+          onClick={handleClose}
+          data-testid="create-room-modal-cancel-button"
+        >
           {t('cancelButton')}
         </BrandModal.Button>
 
-        <BrandModal.Button kind="yes" type="submit">
+        <BrandModal.Button
+          kind="yes"
+          type="submit"
+          data-testid="create-room-modal-create-button"
+        >
           {t('createButton')}
         </BrandModal.Button>
       </BrandModal.ButtonGroup>

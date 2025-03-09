@@ -1,8 +1,8 @@
+import { routing } from '@/i18n/routing';
+import { DefaultLocale, Locale } from '@/types/misc';
+import { extractLocale } from '@/utils/pathname';
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest, NextResponse } from 'next/server';
-import { routing } from '~/i18n/routing';
-import { DefaultLocale, Locale } from '~/types/misc';
-import { extractLocale } from '~/utils/pathname';
+import { type NextRequest, NextResponse } from 'next/server';
 
 const handleI18nRouting = createMiddleware(routing);
 

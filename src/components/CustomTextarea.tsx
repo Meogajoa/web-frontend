@@ -1,6 +1,6 @@
+import { type Nullable } from '@/types/misc';
+import { cn } from '@/utils/classname';
 import React from 'react';
-import { Nullable } from '~/types/misc';
-import { cn } from '~/utils/classname';
 
 export type TextareaHandle = {
   clear: () => void;

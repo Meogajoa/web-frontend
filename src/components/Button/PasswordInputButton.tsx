@@ -1,8 +1,8 @@
+import { CreateRoomModal } from '@/components/BrandModal';
+import { Button } from '@/components/Button';
+import { cn } from '@/utils/classname';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { CreateRoomModal } from '~/components/BrandModal';
-import { Button } from '~/components/Button';
-import { cn } from '~/utils/classname';
 
 type Props = {
   className?: React.ComponentProps<'button'>['className'];

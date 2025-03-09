@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react';
+import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
+import { MENUS } from '@/constants/navigation';
+import { FullScreen, RemovePadding } from '@/utils/storybook';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import BottomNavigation from '~/components/BottomNavigation/BottomNavigation';
-import { MENUS } from '~/constants/navigation';
-import { FullScreen, RemovePadding } from '~/utils/storybook';
 
 const meta: Meta<typeof BottomNavigation> = {
   title: 'Molecules/BottomNavigation',

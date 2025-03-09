@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from 'react';
-import { cn } from '~/utils/classname';
+import { cn } from '@/utils/classname';
+import React, { type PropsWithChildren } from 'react';
 
 type BaseNoticeItemProps = {
   className?: string;

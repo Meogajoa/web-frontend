@@ -1,12 +1,12 @@
+import { cn } from '@/utils/classname';
 import {
-  Button as HeadlessButton,
-  ButtonProps as HeadlessButtonProps,
+  Button as _Button,
+  type ButtonProps as _ButtonProps,
 } from '@headlessui/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { cva, VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 import { PulseLoader } from 'react-spinners';
-import { cn } from '~/utils/classname';
 
 const BUTTON_ICONS = {
   'chevron-down': ChevronDownIcon,
@@ -14,7 +14,7 @@ const BUTTON_ICONS = {
 } as const;
 
 const buttonVariant = cva(
-  'data-[disabled]:bg-gray-5 group inline-block text-center font-bold text-white transition duration-300 data-[active]:opacity-70 data-[disabled]:cursor-not-allowed data-[focus]:outline-hidden data-[hover]:opacity-90',
+  'group data-[disabled]:bg-gray-5 inline-block cursor-pointer text-center font-bold text-white transition duration-300 data-[active]:opacity-70 data-[disabled]:cursor-not-allowed data-[focus]:outline-hidden',
   {
     variants: {
       variant: {
@@ -43,7 +43,7 @@ const buttonVariant = cva(
   },
 );
 
-export type ButtonProps = HeadlessButtonProps &
+export type ButtonProps = _ButtonProps &
   VariantProps<typeof buttonVariant> & {
     loading?: boolean;
   };
@@ -58,7 +58,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   const Icon = BUTTON_ICONS[icon!];
 
   return (
-    <HeadlessButton
+    <_Button
       className={cn(buttonVariant({ icon, ...props }), className)}
       {...props}
     >
@@ -66,7 +66,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
       {Icon && (
         <Icon className="size-4.5 stroke-white stroke-2 transition-transform duration-300 group-data-[open]:-rotate-180" />
       )}
-    </HeadlessButton>
+    </_Button>
   );
 };
 

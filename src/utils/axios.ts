@@ -1,6 +1,6 @@
+import { CONFIGS } from '@/utils/config';
+import { isProduction } from '@/utils/env';
 import axios from 'axios';
-import { CONFIGS } from '~/utils/config';
-import { isProduction } from '~/utils/env';
 
 export const server = (() => {
   const instance = axios.create({

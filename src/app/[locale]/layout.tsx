@@ -1,8 +1,8 @@
+import { routing } from '@/i18n/routing';
+import IntlProvider from '@/providers/IntlProvider';
+import RootProvider from '@/providers/RootProvider';
 import { setRequestLocale } from 'next-intl/server';
 import React from 'react';
-import { routing } from '~/i18n/routing';
-import IntlProvider from '~/providers/IntlProvider';
-import RootProvider from '~/providers/RootProvider';
 
 export const generateStaticParams = async () => {
   return routing.locales.map((locale) => ({ locale }));

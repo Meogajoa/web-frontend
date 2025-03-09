@@ -1,12 +1,12 @@
+import { Button } from '@/components/Button';
+import { cn } from '@/utils/classname';
 import {
-  Button as HeadlessButton,
-  type ButtonProps as HeadlessButtonProps,
+  Button as _Button,
+  type ButtonProps as _ButtonProps,
 } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import { Button } from '~/components/Button';
-import { cn } from '~/utils/classname';
-import Modal, { ModalProps } from '../Modal';
+import Modal, { type ModalProps } from '../Modal';
 
 export type BrandModalProps = ModalProps & {
   className?: string;
@@ -18,10 +18,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
   ...props
 }) => {
   return (
-    <Modal
-      className={cn('bg-gray-6 flex size-fit max-w-lg flex-col', className)}
-      {...props}
-    >
+    <Modal className={cn('bg-gray-6 size-fit max-w-lg', className)} {...props}>
       {children}
     </Modal>
   );
@@ -56,7 +53,7 @@ const Title: React.FC<TitleProps> = ({ className, label }) => {
   return <h1 className={cn('text-2xl font-bold', className)}>{label}</h1>;
 };
 
-type CloseButtonProps = HeadlessButtonProps & {
+type CloseButtonProps = _ButtonProps & {
   className?: string;
   position?: 'right' | 'left';
   onClose: () => void;
@@ -69,7 +66,7 @@ const CloseButton: React.FC<CloseButtonProps> = ({
   ...props
 }) => {
   return (
-    <HeadlessButton
+    <_Button
       className={cn(
         'fill-gray-1 absolute size-6 cursor-pointer stroke-2',
         position === 'right' ? 'right-4' : 'left-4',
@@ -102,9 +99,7 @@ const ButtonGroup: React.FC<React.PropsWithChildren<ButtonGroup>> = ({
   children,
 }) => {
   return (
-    <div
-      className={cn('flex items-center justify-center gap-x-8 p-5', className)}
-    >
+    <div className={cn('flex justify-center space-x-8 p-5', className)}>
       {children}
     </div>
   );
@@ -114,14 +109,18 @@ type ModalButtonProps = {
   className?: string;
   kind: 'yes' | 'no';
   type?: React.ComponentProps<'button'>['type'];
+  disabled?: boolean;
   onClick?: () => void;
+  'data-testid'?: string;
 };
 
 const ModalButton: React.FC<React.PropsWithChildren<ModalButtonProps>> = ({
   className,
   kind,
   type,
+  disabled,
   onClick: handleClick,
+  'data-testid': dataTestId,
   children,
 }) => {
   return (
@@ -131,7 +130,9 @@ const ModalButton: React.FC<React.PropsWithChildren<ModalButtonProps>> = ({
       size="lg"
       variant={kind === 'yes' ? 'primary' : 'secondary'}
       type={type}
+      disabled={disabled}
       onClick={handleClick}
+      data-testid={dataTestId}
     >
       {children}
     </Button>

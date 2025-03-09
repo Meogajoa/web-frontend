@@ -1,4 +1,4 @@
-import type { Optional } from '~/types/misc';
+import type { Optional } from '@/types/misc';
 
 export const extractLocale = (pathname: string): Optional<string> => {
   const regex = /^\/([^/]+)/;

@@ -1,8 +1,14 @@
+import NoticeItem, {
+  type NoticeItemProps,
+} from '@/components/GameResultNotice/NoticeItem';
+import TeamNoticeItem, {
+  type TeamNoticeItemProps,
+} from '@/components/GameResultNotice/TeamNoticeItem';
+import VoteNoticeItem, {
+  type VoteNoticeItemProps,
+} from '@/components/GameResultNotice/VoteNoticeItem';
+import { cn } from '@/utils/classname';
 import React from 'react';
-import { cn } from '~/utils/classname';
-import NoticeItem, { NoticeItemProps } from './NoticeItem';
-import TeamNoticeItem, { TeamNoticeItemProps } from './TeamNoticeItem';
-import VoteNoticeItem, { VoteNoticeItemProps } from './VoteNoticeItem';
 
 export type GameResultNoticeProps = {
   className?: string;

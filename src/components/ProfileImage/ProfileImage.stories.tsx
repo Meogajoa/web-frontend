@@ -1,6 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
-import ExampleImage from '~/assets/images/cat.png';
-import ProfileImage from '~/components/ProfileImage/ProfileImage';
+import ExampleImage from '@/assets/images/cat.png';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import { Team } from '@/types/game';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ProfileImage> = {
   title: 'Atoms/ProfileImage',
@@ -15,9 +16,9 @@ const meta: Meta<typeof ProfileImage> = {
     color: {
       description: '배경색',
       control: 'select',
-      options: ['gray', 'light-gray'],
+      options: [Team.Black, Team.White, Team.Red],
     },
-    userNumber: {
+    playerNumber: {
       description: '숫자 박스 값',
       control: {
         type: 'range',
@@ -36,8 +37,8 @@ type Story = StoryObj<typeof ProfileImage>;
 export const Default: Story = {
   args: {
     size: 'xl',
-    color: 'gray',
-    userNumber: 1,
+    color: Team.Black,
+    playerNumber: 1,
     src: ExampleImage.src,
   },
 };

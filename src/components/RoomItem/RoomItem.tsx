@@ -1,7 +1,7 @@
+import { Link } from '@/i18n/routing';
+import LockIcon from '@/svgs/LockIcon';
+import { cn } from '@/utils/classname';
 import React from 'react';
-import { Link } from '~/i18n/routing';
-import LockIcon from '~/svgs/LockIcon';
-import { cn } from '~/utils/classname';
 
 type Props = {
   className?: string;
@@ -30,7 +30,9 @@ const RoomItem: React.FC<Props> = ({
       )}
     >
       <Link className="flex items-center p-4" href={`/rooms/${id}`}>
-        <p className="text-2xl">{title}</p>
+        <p className="text-2xl" data-testid={`room-name-${title}`}>
+          {title}
+        </p>
         <p className="ml-2 text-sm">{description}</p>
         <LockIcon
           className={cn(

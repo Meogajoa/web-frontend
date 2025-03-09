@@ -1,9 +1,10 @@
-import { Button as HeadlessuiButton } from '@headlessui/react';
+import CustomTextarea, {
+  type TextareaHandle,
+} from '@/components/CustomTextarea';
+import MessageSendIcon from '@/svgs/MessageSendIcon';
+import { cn } from '@/utils/classname';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import CustomTextarea, { TextareaHandle } from '~/components/CustomTextarea';
-import MessageSendIcon from '~/svgs/MessageSendIcon';
-import { cn } from '~/utils/classname';
 
 type Props = {
   className?: string;
@@ -35,12 +36,12 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   onMenuClick: handleMenuClick,
 }) => {
   return (
-    <HeadlessuiButton
+    <button
       className={cn('size-6 cursor-pointer', className)}
       onClick={handleMenuClick}
     >
       <PlusCircleIcon className="stroke-gray-1 size-full" />
-    </HeadlessuiButton>
+    </button>
   );
 };
 
@@ -48,17 +49,17 @@ type TextareaProps = {
   className?: string;
   ref: React.RefObject<TextareaHandle>;
   onKeyDown?: React.ComponentProps<'textarea'>['onKeyDown'];
+  onInput?: React.ComponentProps<'textarea'>['onInput'];
 };
 
-const Textarea: React.FC<TextareaProps> = ({ className, ref, onKeyDown }) => {
+const Textarea: React.FC<TextareaProps> = ({ className, ...props }) => {
   return (
     <CustomTextarea
       className={cn(
         'scrollbar-hide scrollbar-primary border-gray-6 text-gray-1 placeholder:text-gray-5 rounded-lg border p-2.5 text-xl outline-hidden transition-all duration-300',
         className,
       )}
-      ref={ref}
-      onKeyDown={onKeyDown}
+      {...props}
     />
   );
 };
@@ -73,7 +74,7 @@ const SendButton: React.FC<SendButtonProps> = ({
   onSendClick: handleSend,
 }) => {
   return (
-    <HeadlessuiButton
+    <button
       className={cn(
         'size-5.5 cursor-pointer transition-transform duration-300 hover:rotate-45',
         className,
@@ -81,7 +82,7 @@ const SendButton: React.FC<SendButtonProps> = ({
       onClick={handleSend}
     >
       <MessageSendIcon className="stroke-gray-1 size-full" />
-    </HeadlessuiButton>
+    </button>
   );
 };
 

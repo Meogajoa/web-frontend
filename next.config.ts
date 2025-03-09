@@ -1,6 +1,6 @@
+import { CONFIGS } from '@/utils/config';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
-import { CONFIGS } from '~/utils/config';
 
 const withNextIntl = createNextIntlPlugin();
 

@@ -1,7 +1,7 @@
+import { cn } from '@/utils/classname';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { cva, VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
-import { cn } from '~/utils/classname';
 
 type InputProps = VariantProps<typeof InputVariant> & {
   className?: string;
