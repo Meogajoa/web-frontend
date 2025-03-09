@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Selection } from '~/components/ButtonGame/ButtonGame';
-import GameBoard from '~/components/Game/GameBoard';
-import GameIcon from '~/svgs/GameIcon';
-import { Team } from '~/types/game';
-import { cn } from '~/utils/classname';
+import { type Selection } from '@/components/ButtonGame/ButtonGame';
+import GameBoard from '@/components/Game/GameBoard';
+import GameIcon from '@/svgs/GameIcon';
+import { type Team } from '@/types/game';
+import { cn } from '@/utils/classname';
+import React from 'react';
 
 export type Props = {
   className?: string;
@@ -25,7 +25,7 @@ const GameButton: React.FC<Props> = ({
   gameType,
   gameData,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <div className={cn(className)} onClick={() => setIsOpen(true)}>
       {hasNotice && (

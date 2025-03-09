@@ -1,6 +1,6 @@
-import { Team } from '~/types/game';
-import { cn } from '~/utils/classname';
-import SelectButtonAndList from './SelectButtonAndList';
+import SelectButtonAndList from '@/components/ButtonGame/SelectButtonAndList';
+import { type Team } from '@/types/game';
+import { cn } from '@/utils/classname';
 
 export type Selection = {
   number: number;

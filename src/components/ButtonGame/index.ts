@@ -1,3 +1,3 @@
-import ButtonGame from '~/components/ButtonGame/ButtonGame';
+import ButtonGame from '@/components/ButtonGame/ButtonGame';
 
 export { ButtonGame };

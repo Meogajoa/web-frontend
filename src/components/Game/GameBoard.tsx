@@ -1,7 +1,7 @@
-import ButtonGame, { Selection } from '~/components/ButtonGame/ButtonGame';
-import TopArrowIcon from '~/svgs/TopArrowIcon';
-import { Team } from '~/types/game';
-import { cn } from '~/utils/classname';
+import ButtonGame, { type Selection } from '@/components/ButtonGame/ButtonGame';
+import TopArrowIcon from '@/svgs/TopArrowIcon';
+import { type Team } from '@/types/game';
+import { cn } from '@/utils/classname';
 
 type Props = {
   className?: string;

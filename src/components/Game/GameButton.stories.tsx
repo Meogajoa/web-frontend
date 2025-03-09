@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { Team } from '~/types/game';
+import { Team } from '@/types/game';
+import type { Meta, StoryObj } from '@storybook/react';
 import GameButton from './GameButton';
 
 const meta: Meta<typeof GameButton> = {
@@ -22,12 +22,12 @@ type Story = StoryObj<typeof GameButton>;
 export const Default: Story = {
   args: {
     gameType: 'Button',
-    isNoticed: false,
+    hasNotice: false,
     gameData: {
       selectButtons: [
         {
           prize: 10,
-          whoIsSelect: [
+          whoHasSelected: [
             { number: 1, team: Team.Black },
             { number: 5, team: Team.White },
             { number: 8, team: Team.Black },
@@ -37,7 +37,7 @@ export const Default: Story = {
         },
         {
           prize: 20,
-          whoIsSelect: [
+          whoHasSelected: [
             { number: 2, team: Team.White },
             { number: 4, team: Team.Black },
           ],
@@ -46,7 +46,7 @@ export const Default: Story = {
         },
         {
           prize: 30,
-          whoIsSelect: [
+          whoHasSelected: [
             { number: 3, team: Team.White },
             { number: 6, team: Team.White },
             { number: 7, team: Team.Black },

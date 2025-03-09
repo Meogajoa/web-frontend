@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { cn } from '~/utils/classname';
-import NumberIconBall from '../NumberIconBall';
-import { Selection } from './ButtonGame';
+import { type Selection } from '@/components/ButtonGame/ButtonGame';
+import NumberIconBall from '@/components/GameResultNotice/NumberIconBall';
+import { cn } from '@/utils/classname';
+import React from 'react';
 
 type Props = {
   className?: string;
@@ -14,7 +14,7 @@ const SelectButtonAndList: React.FC<Props> = ({
   prize,
   whoIsSelect,
 }) => {
-  const [isSelect, setIsSelect] = useState(false);
+  const [isSelect, setIsSelect] = React.useState(false);
 
   const handleClick = () => {
     setIsSelect((prev) => !prev);
