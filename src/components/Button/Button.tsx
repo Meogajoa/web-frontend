@@ -14,7 +14,7 @@ const BUTTON_ICONS = {
 } as const;
 
 const buttonVariant = cva(
-  'data-[disabled]:bg-gray-5 data-[focus]:outline-hidden group inline-block text-center font-bold text-white transition duration-300 data-[disabled]:cursor-not-allowed data-[active]:opacity-70 data-[hover]:opacity-90',
+  'data-[disabled]:bg-gray-5 group inline-block text-center font-bold text-white transition duration-300 data-[active]:opacity-70 data-[disabled]:cursor-not-allowed data-[focus]:outline-hidden data-[hover]:opacity-90',
   {
     variants: {
       variant: {

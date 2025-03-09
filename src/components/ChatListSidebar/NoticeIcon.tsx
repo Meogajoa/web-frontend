@@ -10,7 +10,7 @@ const NoticeIcon: React.FC<Props> = ({ className, notice }) => {
   return (
     <div
       className={cn(
-        'bg-red flex size-4 items-center justify-center rounded-full font-brand text-[0.5rem] font-bold text-white',
+        'bg-red font-brand flex size-4 items-center justify-center rounded-full text-[0.5rem] font-bold text-white',
         className,
       )}
     >

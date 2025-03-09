@@ -29,7 +29,7 @@ const GameButton: React.FC<Props> = ({
   return (
     <div className={cn(className)} onClick={() => setIsOpen(true)}>
       {hasNotice && (
-        <div className="bg-red absolute right-[0.313rem] top-[0.313rem] size-2.5 rounded-full" />
+        <div className="bg-red absolute top-[0.313rem] right-[0.313rem] size-2.5 rounded-full" />
       )}
       <GameIcon />
       {isOpen && gameType === 'Button' && (

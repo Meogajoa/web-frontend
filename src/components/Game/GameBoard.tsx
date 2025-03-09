@@ -32,7 +32,7 @@ const GameBoard: React.FC<Props> = ({
       )}
       onClick={(e) => e.stopPropagation()}
     >
-      <TopArrowIcon className="absolute right-3 top-6" onClick={onClose} />
+      <TopArrowIcon className="absolute top-6 right-3" onClick={onClose} />
       {gameType === 'Button' && (
         <ButtonGame selectButtons={gameData.selectButtons} />
       )}
