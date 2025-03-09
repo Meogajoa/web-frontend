@@ -56,6 +56,7 @@ export enum MiniGame {
   Invalid = 'INVALID',
   ButtonClick = 'BUTTON_CLICK',
   Vote = 'VOTE_GAME',
+  ReVote = 'RE_VOTE_GAME',
 }
 
 export enum GameModal {
