@@ -3,6 +3,7 @@
 - [Design] - 김나은
 - [FE] - [jeheecheon](https://github.com/jeheecheon)
 - [FE] - [Jackihyun](https://github.com/Jackihyun)
+- [FE] - [Yoo-yongseok](https://github.com/Yoo-yongseok)
 - [BE] - [ZhongdanBae](https://github.com/ZhongdanBae)
 - [BE] - [carefulseop510](https://github.com/carefulseop510)
 
